@@ -10,7 +10,7 @@
 import UIKit
 import CoreData
 
-class ToDoListViewController: UITableViewController {
+class ToDoListViewController: UITableViewController{
     
     var itemArray = [Item]()
 
@@ -53,7 +53,14 @@ class ToDoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //        print(itemArray[indexPath.row])
         
-        itemArray[indexPath.row].done = !itemArray[indexPath.row].done
+        
+       
+//        itemArray[indexPath.row].setValue("Completed", forKey: "title") Update
+          itemArray[indexPath.row].done = !itemArray[indexPath.row].done
+        
+//        context.delete(itemArray[indexPath.row])
+//        itemArray.remove(at: indexPath.row)       Delete
+        
         self.saveItems()
         
         
@@ -126,4 +133,14 @@ class ToDoListViewController: UITableViewController {
         }
     }
     
+    
+    
+}
+
+//MARK: - Search bar methods
+extension ToDoListViewController: UISearchBarDelegate{
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+    }
 }
