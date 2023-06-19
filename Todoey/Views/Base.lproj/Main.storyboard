@@ -75,7 +75,7 @@
             </objects>
             <point key="canvasLocation" x="320" y="5"/>
         </scene>
-        <!--Category View Controller-->
+        <!--Todoey-->
         <scene sceneID="jaY-ai-MfV">
             <objects>
                 <tableViewController id="1Jx-oV-ojd" customClass="CategoryViewController" customModule="Todoey" customModuleProvider="target" sceneMemberID="viewController">
@@ -98,11 +98,11 @@
                             <outlet property="delegate" destination="1Jx-oV-ojd" id="nAU-Lw-W1z"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Pqa-sQ-mrF">
-                        <barButtonItem key="rightBarButtonItem" title="Todoey" id="Zfu-AQ-DEr">
+                    <navigationItem key="navigationItem" title="Todoey" id="Pqa-sQ-mrF">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Zfu-AQ-DEr">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
-                                <action selector="addButtonPressed:" destination="1Jx-oV-ojd" id="zLL-O5-msV"/>
+                                <action selector="addButtonPressed:" destination="1Jx-oV-ojd" id="gRg-A1-DCW"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
