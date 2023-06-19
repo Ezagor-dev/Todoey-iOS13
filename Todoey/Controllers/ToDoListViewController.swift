@@ -138,19 +138,46 @@ class ToDoListViewController: UITableViewController{
     
 }
 
-//MARK: - Search bar methods
-extension ToDoListViewController: UISearchBarDelegate{
+
     
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let request: NSFetchRequest<Item> = Item.fetchRequest()
+    //MARK: - Search bar methods
+    extension ToDoListViewController: UISearchBarDelegate {
         
-        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+            performSearch(with: searchBar.text)
+            searchBar.resignFirstResponder()
+        }
         
+        func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+            searchBar.text = ""
+            searchBar.resignFirstResponder()
+            loadItems()
+        }
         
-        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-        loadItems(with: request)
-
+        func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+            if searchText.isEmpty {
+                searchBar.setShowsCancelButton(false, animated: true)
+                loadItems()
+            } else {
+                searchBar.setShowsCancelButton(true, animated: true)
+                performSearch(with: searchText)
+            }
+        }
         
-
+        func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+            searchBar.setShowsCancelButton(!searchBar.text!.isEmpty, animated: true)
+            return true
+        }
+        
+        func performSearch(with searchText: String?) {
+            let request: NSFetchRequest<Item> = Item.fetchRequest()
+            
+            if let text = searchText, !text.isEmpty {
+                request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", text)
+            }
+            
+            request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+            loadItems(with: request)
+        }
     }
-}
+
