@@ -11,4 +11,9 @@ import CoreData
 
 class CategoryViewController: UITableViewController{
     
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
 }
