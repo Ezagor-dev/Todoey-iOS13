@@ -138,11 +138,7 @@ extension CategoryViewController: SwipeTableViewCellDelegate {
                 }catch{
                     print("Error deleting category, \(error)")
                 }
-                
-                tableView.reloadData()
             }
-            
-            
         }
 
         // customize the action appearance
@@ -154,7 +150,6 @@ extension CategoryViewController: SwipeTableViewCellDelegate {
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
         var options = SwipeOptions()
         options.expansionStyle = .destructive
-        options.transitionStyle = .border
         return options
     }
     
