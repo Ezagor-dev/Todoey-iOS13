@@ -28,9 +28,14 @@ class ToDoListViewController: SwipeTableViewController {
         
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
-        
-        
-        
+        if let colourHex = selectedCategory?.colour{
+            
+            guard let navBar = navigationController?.navigationBar else{
+                fatalError("Navigation controller does not exist.")
+            }
+            navigationController?.navigationBar.barTintColor = UIColor(hexString: colourHex ?? "")
+        }
+
     }
     
     //MARK: - Tableview Datasource Methods
