@@ -62,6 +62,29 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
 }
 
 extension UIColor {
+    convenience init?(hexString: String) {
+        var formattedString = hexString.trimmingCharacters(in: .whitespacesAndNewlines)
+        if formattedString.hasPrefix("#") {
+            formattedString.remove(at: formattedString.startIndex)
+        }
+        
+        var rgbValue: UInt64 = 0
+        Scanner(string: formattedString).scanHexInt64(&rgbValue)
+        
+        let red = CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0
+        let green = CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0
+        let blue = CGFloat(rgbValue & 0x0000FF) / 255.0
+        
+        self.init(red: red, green: green, blue: blue, alpha: 1.0)
+    }
+    func randomFlat() -> UIColor {
+        let red = CGFloat.random(in: 0...1)
+        let green = CGFloat.random(in: 0...1)
+        let blue = CGFloat.random(in: 0...1)
+        
+        return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
+        
+    }
     func darken(byPercentage percentage: CGFloat) -> UIColor {
         guard percentage > 0 else { return self }
         
@@ -71,8 +94,26 @@ extension UIColor {
             return UIColor(hue: hue, saturation: saturation, brightness: newBrightness, alpha: alpha)
         }
         
+        
         return self
     }
+    
+    func toHexString() -> String? {
+            guard let components = cgColor.components else { return nil }
+            
+            let red = Float(components[0])
+            let green = Float(components[1])
+            let blue = Float(components[2])
+            
+            let hexString = String(format: "#%02lX%02lX%02lX",
+                                   lroundf(red * 255),
+                                   lroundf(green * 255),
+                                   lroundf(blue * 255))
+            
+            return hexString
+        }
+    
+    
 }
 
 

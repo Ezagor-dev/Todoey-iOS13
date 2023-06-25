@@ -39,16 +39,31 @@ class CategoryViewController: SwipeTableViewController{
         
         
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        let randomColor = UIColor().randomFlat()
         
-        cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories added yet"
-        
-        
-        let startColor = UIColor(red: 152/255, green: 238/255, blue: 204/255, alpha: 1.0)
-            let maxItems = CGFloat(categories?.count ?? 1)
-            let percentage = CGFloat(indexPath.row) / maxItems
-            let endColor = startColor.darken(byPercentage: 0.3 + (0.4 * percentage)) // Adjust the darkening factor to achieve the desired effect
+        if let category = categories?[indexPath.row]{
             
-            cell.backgroundColor = endColor
+            cell.textLabel?.text = categories?[indexPath.row].name
+            if let categoryColor = UIColor(hexString: category.colour) {
+                    cell.backgroundColor = categoryColor
+            } else {
+                cell.backgroundColor = UIColor(hexString: "98EECC")
+            }
+            
+            
+//            let startColor = UIColor(red: 152/255, green: 238/255, blue: 204/255, alpha: 1.0)
+//                let maxItems = CGFloat(categories?.count ?? 1)
+//                let percentage = CGFloat(indexPath.row) / maxItems
+//                let endColor = startColor.darken(byPercentage: 0.3 + (0.4 * percentage)) // Adjust the darkening factor to achieve the desired effect
+//
+//                cell.backgroundColor = endColor
+            
+        }else{
+            cell.textLabel?.text = "No Categories added yet"
+                cell.backgroundColor = UIColor(hexString: "1D9BF6")
+        }
+        
+        
         
         return cell
         
@@ -120,9 +135,11 @@ class CategoryViewController: SwipeTableViewController{
         let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
-            
+            let randomColor2 = UIColor().randomFlat()
             let newCategory = Category()
             newCategory.name = textField.text!
+            newCategory.colour = randomColor2.toHexString() ?? ""
+
             
             
             self.save(category: newCategory)
