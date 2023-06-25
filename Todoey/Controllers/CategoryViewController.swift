@@ -23,6 +23,7 @@ class CategoryViewController: SwipeTableViewController{
         
         loadCategories()
         
+//        tableView.separatorStyle = .none
 
         
     }
@@ -40,6 +41,14 @@ class CategoryViewController: SwipeTableViewController{
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories added yet"
+        
+        
+        let startColor = UIColor(red: 152/255, green: 238/255, blue: 204/255, alpha: 1.0)
+            let maxItems = CGFloat(categories?.count ?? 1)
+            let percentage = CGFloat(indexPath.row) / maxItems
+            let endColor = startColor.darken(byPercentage: 0.3 + (0.4 * percentage)) // Adjust the darkening factor to achieve the desired effect
+            
+            cell.backgroundColor = endColor
         
         return cell
         

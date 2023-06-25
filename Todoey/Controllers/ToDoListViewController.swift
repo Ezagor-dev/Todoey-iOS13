@@ -28,8 +28,8 @@ class ToDoListViewController: SwipeTableViewController {
         
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
-
-
+        
+        
         
     }
     
@@ -39,7 +39,7 @@ class ToDoListViewController: SwipeTableViewController {
         return todoItems?.count ?? 1
     }
     
-
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -48,6 +48,8 @@ class ToDoListViewController: SwipeTableViewController {
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
             
+            
+            
             //Ternary operator ==>
             // value = condition ? valueIfTrue : valueIfFalse
             
@@ -55,6 +57,13 @@ class ToDoListViewController: SwipeTableViewController {
         }else{
             cell.textLabel?.text = "No Items Added"
         }
+        let startColor = UIColor(red: 79/255, green: 192/255, blue: 208/255, alpha: 1.0)
+            let maxItems = CGFloat(todoItems?.count ?? 1)
+            let percentage = CGFloat(indexPath.row) / maxItems
+            let endColor = startColor.darken(byPercentage: 0.3 + (0.4 * percentage)) // Adjust the darkening factor to achieve the desired effect
+            
+            cell.backgroundColor = endColor
+        
         return cell
     }
     
@@ -62,11 +71,11 @@ class ToDoListViewController: SwipeTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-
+        
         if let item = todoItems?[indexPath.row]{
             do{
                 try realm.write{
-//                    realm.delete(item)            DELETE
+                    //                    realm.delete(item)            DELETE
                     item.done = !item.done
                 }
             }catch{
@@ -75,7 +84,7 @@ class ToDoListViewController: SwipeTableViewController {
         }
         tableView.reloadData()
         
-
+        
         
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -142,11 +151,11 @@ class ToDoListViewController: SwipeTableViewController {
     func loadItems() {
         
         todoItems = selectedCategory?.items.sorted(byKeyPath: "title",ascending: true)
-
-
-
+        
+        
+        
         tableView.reloadData()
-
+        
     }
     
 }
@@ -154,28 +163,28 @@ class ToDoListViewController: SwipeTableViewController {
 //MARK: - Search bar methods
 
 extension ToDoListViewController: UISearchBarDelegate {
-
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
         todoItems = todoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated",ascending: true)
         
         tableView.reloadData()
     }
-
-
-
-
+    
+    
+    
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0 {
             loadItems()
-
+            
             DispatchQueue.main.async {
                 searchBar.resignFirstResponder()
             }
-
+            
         }
     }
 }
 
-    
+
 

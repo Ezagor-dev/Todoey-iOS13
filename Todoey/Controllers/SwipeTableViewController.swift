@@ -61,4 +61,20 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
     }
 }
 
+extension UIColor {
+    func darken(byPercentage percentage: CGFloat) -> UIColor {
+        guard percentage > 0 else { return self }
+        
+        var hue: CGFloat = 0, saturation: CGFloat = 0, brightness: CGFloat = 0, alpha: CGFloat = 0
+        if self.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) {
+            let newBrightness = max(brightness - (brightness * percentage), 0)
+            return UIColor(hue: hue, saturation: saturation, brightness: newBrightness, alpha: alpha)
+        }
+        
+        return self
+    }
+}
+
+
+
 
