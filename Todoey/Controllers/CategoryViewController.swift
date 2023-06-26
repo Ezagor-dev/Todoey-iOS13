@@ -248,6 +248,11 @@ class CategoryViewController: SwipeTableViewController{
                         newCategory.colour = randomColor.toHexString() ?? ""
 
                         self.save(category: newCategory)
+                    }else{
+                        let errorAlert = UIAlertController(title: "Error", message: "Category name cannot be empty.", preferredStyle: .alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        errorAlert.addAction(okAction)
+                        self.present(errorAlert, animated: true, completion: nil)
                     }
                 }
 

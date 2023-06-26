@@ -144,31 +144,38 @@ class ToDoListViewController: SwipeTableViewController {
     override func editModel(at indexPath: IndexPath) {
         let alert = UIAlertController(title: "Edit Item", message: "", preferredStyle: .alert)
         var textField = UITextField()
-        
+
         let action = UIAlertAction(title: "Update", style: .default) { (action) in
-            if let item = self.todoItems?[indexPath.row] {
+            if let newItemName = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+               !newItemName.isEmpty, let item = self.todoItems?[indexPath.row] {
                 do {
                     try self.realm.write {
-                        item.title = textField.text!.capitalized
+                        item.title = newItemName.capitalized
                     }
                 } catch {
                     print("Error updating item: \(error)")
                 }
+                self.tableView.reloadData()
+            } else {
+                // Show an error message indicating that the name cannot be empty
+                let errorAlert = UIAlertController(title: "Error", message: "Item name cannot be empty.", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                errorAlert.addAction(okAction)
+                self.present(errorAlert, animated: true, completion: nil)
             }
-            self.tableView.reloadData()
         }
-        
+
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        
+
         alert.addTextField { (field) in
             textField = field
             textField.text = self.todoItems?[indexPath.row].title
             textField.autocapitalizationType = .sentences
         }
-        
+
         alert.addAction(action)
         alert.addAction(cancelAction)
-        
+
         present(alert, animated: true, completion: nil)
     }
 
@@ -211,6 +218,11 @@ class ToDoListViewController: SwipeTableViewController {
                         } catch {
                             print("Error saving new items, \(error)")
                         }
+                    }else{
+                        let errorAlert = UIAlertController(title: "Error", message: "Item name cannot be empty.", preferredStyle: .alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        errorAlert.addAction(okAction)
+                        self.present(errorAlert, animated: true, completion: nil)
                     }
                     
                     self.tableView.reloadData()
