@@ -139,6 +139,8 @@ class ToDoListViewController: SwipeTableViewController {
     }
     
     //MARK: Edit Data From Swipe
+    
+    
     override func editModel(at indexPath: IndexPath) {
         let alert = UIAlertController(title: "Edit Item", message: "", preferredStyle: .alert)
         var textField = UITextField()
@@ -193,38 +195,41 @@ class ToDoListViewController: SwipeTableViewController {
         
         var textField = UITextField()
         
-        let alert = UIAlertController(title: "Add New Todoey Item", message: "", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Add New Item", message: "", preferredStyle: .alert)
         
-        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
-            //what will happen once the user clicks the Add Item button on our UIAlert
-            
-            if let currentCategory = self.selectedCategory{
-                do{
-                    try self.realm.write{
-                        let newItem = Item()
-                        newItem.title = textField.text!.capitalized
-                        newItem.dateCreated = Date()
-                        currentCategory.items.append(newItem)
-                    }   }catch{
-                        print("Error saving new items, \(error)")
+        let addAction = UIAlertAction(title: "Add Item", style: .default) { (_) in
+                    let itemName = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+
+                    if let name = itemName, !name.isEmpty, let currentCategory = self.selectedCategory {
+                        do {
+                            try self.realm.write {
+                                let newItem = Item()
+                                newItem.title = name.capitalized
+                                newItem.dateCreated = Date()
+                                currentCategory.items.append(newItem)
+                            }
+                        } catch {
+                            print("Error saving new items, \(error)")
+                        }
                     }
+                    
+                    self.tableView.reloadData()
+                }
+
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+                alert.addAction(addAction)
+                alert.addAction(cancelAction)
+
+                alert.addTextField { (alertTextField) in
+                    textField = alertTextField
+                    textField.placeholder = "Create new item"
+                    textField.autocapitalizationType = .sentences
+                }
+
+                present(alert, animated: true, completion: nil)
             }
-            self.tableView.reloadData()
-        }
-        
-        alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Create new item"
-            textField = alertTextField
-            textField.autocapitalizationType = .words
-            
-        }
-        
-        
-        alert.addAction(action)
-        
-        present(alert, animated: true, completion: nil)
-        
-    }
+
     
     //MARK - Model Manupulation Methods
     

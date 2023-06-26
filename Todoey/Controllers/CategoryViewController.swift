@@ -202,23 +202,29 @@ class CategoryViewController: SwipeTableViewController{
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             
-            let saveAction = UIAlertAction(title: "Save", style: .default) { (_) in
-                if let newName = alertController.textFields?.first?.text?.capitalized,
-                   let category = category {
+        let saveAction = UIAlertAction(title: "Save", style: .default) { (_) in
+                if let newName = alertController.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+                   !newName.isEmpty, let category = category {
                     do {
                         try self.realm.write {
-                            category.name = newName
+                            category.name = newName.capitalized
                         }
                     } catch {
                         print("Error updating category name: \(error)")
                     }
                     self.tableView.reloadData()
+                } else {
+                    // Show an error message indicating that the name cannot be empty
+                    let errorAlert = UIAlertController(title: "Error", message: "Category name cannot be empty.", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    errorAlert.addAction(okAction)
+                    self.present(errorAlert, animated: true, completion: nil)
                 }
             }
-            
+
             alertController.addAction(cancelAction)
             alertController.addAction(saveAction)
-            
+
             present(alertController, animated: true, completion: nil)
         }
     
