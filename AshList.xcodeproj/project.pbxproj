@@ -26,7 +26,7 @@
 		E6D058DB2A448EEB00BD6819 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		E6D058DD2A448EFB00BD6819 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		E6D058E42A48BAED00BD6819 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
-		EB2BE4F6239524DB00FB933B /* Todoey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoey.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB2BE4F6239524DB00FB933B /* AshList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AshList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2BE4F9239524DB00FB933B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB2BE4FD239524DB00FB933B /* ToDoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListViewController.swift; sourceTree = "<group>"; };
 		EB2BE500239524DB00FB933B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -96,7 +96,7 @@
 		EB2BE4F7239524DB00FB933B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EB2BE4F6239524DB00FB933B /* Todoey.app */,
+				EB2BE4F6239524DB00FB933B /* AshList.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -117,9 +117,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		EB2BE4F5239524DB00FB933B /* Todoey */ = {
+		EB2BE4F5239524DB00FB933B /* AshList */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EB2BE50A239524DC00FB933B /* Build configuration list for PBXNativeTarget "Todoey" */;
+			buildConfigurationList = EB2BE50A239524DC00FB933B /* Build configuration list for PBXNativeTarget "AshList" */;
 			buildPhases = (
 				EB2BE4F2239524DB00FB933B /* Sources */,
 				EB2BE4F3239524DB00FB933B /* Frameworks */,
@@ -129,14 +129,14 @@
 			);
 			dependencies = (
 			);
-			name = Todoey;
+			name = AshList;
 			packageProductDependencies = (
 				E6D058D52A42095E00BD6819 /* Realm */,
 				E6D058D72A42095E00BD6819 /* RealmSwift */,
 				E6D058E02A44D5FD00BD6819 /* SwipeCellKit */,
 			);
 			productName = Todoey;
-			productReference = EB2BE4F6239524DB00FB933B /* Todoey.app */;
+			productReference = EB2BE4F6239524DB00FB933B /* AshList.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -148,14 +148,14 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1120;
 				LastUpgradeCheck = 1430;
-				ORGANIZATIONNAME = "App Brewery";
+				ORGANIZATIONNAME = Ezagor;
 				TargetAttributes = {
 					EB2BE4F5239524DB00FB933B = {
 						CreatedOnToolsVersion = 11.2.1;
 					};
 				};
 			};
-			buildConfigurationList = EB2BE4F1239524DB00FB933B /* Build configuration list for PBXProject "Todoey" */;
+			buildConfigurationList = EB2BE4F1239524DB00FB933B /* Build configuration list for PBXProject "AshList" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -172,7 +172,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				EB2BE4F5239524DB00FB933B /* Todoey */,
+				EB2BE4F5239524DB00FB933B /* AshList */,
 			);
 		};
 /* End PBXProject section */
@@ -349,12 +349,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q6BH8KCYLZ;
 				INFOPLIST_FILE = Todoey/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AshList;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ezagor-ios13.Todoey";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ezagor-AshList";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -368,12 +370,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q6BH8KCYLZ;
 				INFOPLIST_FILE = Todoey/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AshList;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ezagor-ios13.Todoey";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ezagor-AshList";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -383,7 +387,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		EB2BE4F1239524DB00FB933B /* Build configuration list for PBXProject "Todoey" */ = {
+		EB2BE4F1239524DB00FB933B /* Build configuration list for PBXProject "AshList" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EB2BE508239524DC00FB933B /* Debug */,
@@ -392,7 +396,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EB2BE50A239524DC00FB933B /* Build configuration list for PBXNativeTarget "Todoey" */ = {
+		EB2BE50A239524DC00FB933B /* Build configuration list for PBXNativeTarget "AshList" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EB2BE50B239524DC00FB933B /* Debug */,
