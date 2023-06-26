@@ -25,29 +25,54 @@ class CategoryViewController: SwipeTableViewController{
         
 //        tableView.separatorStyle = .none
 
-        
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        guard let navBar = navigationController?.navigationBar else{
+            fatalError("Navigation controller does not exist.")}
+        
+        navBar.backgroundColor = UIColor(hexString: "1D9BF6")
+    }
+    
+    
+    
     //MARK: - TableView Datasource Methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return categories?.count ?? 1
     }
     
-    
+    func calculateContrastColor(forColor color: UIColor) -> UIColor {
+        guard let components = color.cgColor.components else {
+            return .black
+        }
+        
+        let red = components[0]
+        let green = components[1]
+        let blue = components[2]
+        
+        let threshold: CGFloat = 0.5
+        let luminance = (red * 0.299) + (green * 0.587) + (blue * 0.114)
+        
+        return luminance > threshold ? .black : .white
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        let randomColor = UIColor().randomFlat()
+        
         
         if let category = categories?[indexPath.row]{
             
             cell.textLabel?.text = categories?[indexPath.row].name
+            
             if let categoryColor = UIColor(hexString: category.colour) {
                     cell.backgroundColor = categoryColor
+                cell.textLabel?.textColor = calculateContrastColor(forColor: categoryColor)
             } else {
                 cell.backgroundColor = UIColor(hexString: "98EECC")
+                cell.textLabel?.textColor = .black
             }
             
             
@@ -75,6 +100,7 @@ class CategoryViewController: SwipeTableViewController{
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "goToItems", sender: self)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -13,6 +13,7 @@ import RealmSwift
 
 class ToDoListViewController: SwipeTableViewController {
     
+    @IBOutlet weak var searchBar: UISearchBar!
     var todoItems: Results<Item>?
     let realm = try! Realm()
     
@@ -28,14 +29,45 @@ class ToDoListViewController: SwipeTableViewController {
         
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
+    }
+    func calculateContrastColor(forColor color: UIColor) -> UIColor {
+        guard let components = color.cgColor.components else {
+            return .black
+        }
+        
+        let red = components[0]
+        let green = components[1]
+        let blue = components[2]
+        
+        let threshold: CGFloat = 0.5
+        let luminance = (red * 0.299) + (green * 0.587) + (blue * 0.114)
+        
+        return luminance > threshold ? .black : .white
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         if let colourHex = selectedCategory?.colour{
             
+            title = selectedCategory!.name
+            
             guard let navBar = navigationController?.navigationBar else{
-                fatalError("Navigation controller does not exist.")
+                fatalError("Navigation controller does not exist.")}
+            
+            
+            
+            if let colorHex = selectedCategory?.colour, let navBarColour = UIColor(hexString: colorHex) {
+                navBar.backgroundColor = navBarColour
+                let contrastColor = calculateContrastColor(forColor: navBarColour)
+                navBar.tintColor = contrastColor
+                navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: contrastColor]
+                searchBar.backgroundColor = navBarColour
             }
-            navigationController?.navigationBar.barTintColor = UIColor(hexString: colourHex ?? "")
+            
+            
+            
+            
+            //            searchBar.barTintColor = UIColor(hexString: colourHex)
         }
-
     }
     
     //MARK: - Tableview Datasource Methods
@@ -59,15 +91,19 @@ class ToDoListViewController: SwipeTableViewController {
             // value = condition ? valueIfTrue : valueIfFalse
             
             cell.accessoryType = item.done ? .checkmark : .none
-        }else{
-            cell.textLabel?.text = "No Items Added"
-        }
-        let startColor = UIColor(red: 79/255, green: 192/255, blue: 208/255, alpha: 1.0)
+            let startColor = UIColor(hexString: selectedCategory!.colour) ?? UIColor(red: 152/255, green: 238/255, blue: 204/255, alpha: 1.0)
             let maxItems = CGFloat(todoItems?.count ?? 1)
             let percentage = CGFloat(indexPath.row) / maxItems
             let endColor = startColor.darken(byPercentage: 0.3 + (0.4 * percentage)) // Adjust the darkening factor to achieve the desired effect
             
             cell.backgroundColor = endColor
+            cell.textLabel?.textColor = calculateContrastColor(forColor: endColor)
+        }else{
+            cell.textLabel?.text = "No Items Added"
+            cell.textLabel?.textColor = .black
+            cell.backgroundColor = UIColor(hexString: "79C0D0")
+        }
+        
         
         return cell
     }
