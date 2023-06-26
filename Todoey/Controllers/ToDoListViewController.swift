@@ -9,6 +9,7 @@
 
 import UIKit
 import RealmSwift
+import SwipeCellKit
 
 
 class ToDoListViewController: SwipeTableViewController {
@@ -80,40 +81,43 @@ class ToDoListViewController: SwipeTableViewController {
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
             
-            
-            
-            //Ternary operator ==>
-            // value = condition ? valueIfTrue : valueIfFalse
-            
             cell.accessoryType = item.done ? .checkmark : .none
-            if let categoryColor = UIColor(hexString: selectedCategory?.colour ?? "") {
-                            let contrastColor = calculateContrastColor(forColor: categoryColor)
-                            cell.tintColor = contrastColor
-                            cell.accessoryView?.tintColor = contrastColor
-                        }
             
-            let startColor = UIColor(hexString: selectedCategory!.colour) ?? UIColor(red: 152/255, green: 238/255, blue: 204/255, alpha: 1.0)
+            if let categoryColor = UIColor(hexString: selectedCategory?.colour ?? "") {
+                let contrastColor = calculateContrastColor(forColor: categoryColor)
+                cell.tintColor = contrastColor
+                cell.accessoryView?.tintColor = contrastColor
+            }
+            
+            let startColor = UIColor(hexString: selectedCategory?.colour ?? "") ?? UIColor(red: 152/255, green: 238/255, blue: 204/255, alpha: 1.0)
             let maxItems = CGFloat(todoItems?.count ?? 1)
             let percentage = CGFloat(indexPath.row) / maxItems
-            let endColor = startColor.darken(byPercentage: 0.3 + (0.4 * percentage)) // Adjust the darkening factor to achieve the desired effect
+            let endColor = startColor.darken(byPercentage: 0.3 + (0.4 * percentage))
             
-            cell.backgroundColor = endColor
-            cell.textLabel?.textColor = calculateContrastColor(forColor: endColor)
-        }else{
+            if item.isPinned {
+                cell.backgroundColor = endColor
+                cell.textLabel?.textColor = calculateContrastColor(forColor: endColor)
+            } else {
+                cell.backgroundColor = endColor
+                cell.textLabel?.textColor = calculateContrastColor(forColor: endColor)
+            }
+        } else {
             cell.textLabel?.text = "No Items Added"
             cell.textLabel?.textColor = .black
             cell.backgroundColor = UIColor(hexString: "79C0D0")
         }
         
-        
         return cell
     }
+
+
+
+
     
     //MARK: - TableView Delegate Methods
     
@@ -196,6 +200,54 @@ class ToDoListViewController: SwipeTableViewController {
         }
     }
     
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard orientation == .right else { return nil }
+        
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+            self.updateModel(at: indexPath)
+        }
+        
+        let editAction = SwipeAction(style: .default, title: "Edit") { action, indexPath in
+            self.editModel(at: indexPath)
+        }
+        
+        let pinAction = SwipeAction(style: .default, title: "Pin") { action, indexPath in
+            self.pinItem(at: indexPath)
+        }
+        
+        // Customize the action appearance
+        deleteAction.image = UIImage(named: "delete-icon")
+        editAction.image = UIImage(systemName: "pencil")
+        pinAction.image = UIImage(systemName: "pin.fill")
+        
+        return [deleteAction, editAction, pinAction]
+    }
+
+    
+    func pinItem(at indexPath: IndexPath) {
+        if let item = todoItems?[indexPath.row] {
+            do {
+                try realm.write {
+                    item.isPinned = !item.isPinned
+                    
+                    let allItems = realm.objects(Item.self).sorted(byKeyPath: "isPinned", ascending: false)
+                    let pinnedItems = allItems.filter("isPinned == true")
+                    let unpinnedItems = allItems.filter("isPinned == false")
+                    
+                    let concatenatedItems = Array(pinnedItems) + Array(unpinnedItems)
+                    todoItems = realm.objects(Item.self).filter("FALSEPREDICATE") // Empty filter to clear the previous Results object
+                    todoItems = realm.objects(Item.self).sorted(byKeyPath: "isPinned", ascending: false)
+                    
+                    tableView.reloadData()
+                }
+            } catch {
+                print("Error updating item pin status, \(error)")
+            }
+        }
+    }
+
+
+    
     //MARK: - Add New Items
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
@@ -248,14 +300,16 @@ class ToDoListViewController: SwipeTableViewController {
     
     
     func loadItems() {
-        
-        todoItems = selectedCategory?.items.sorted(byKeyPath: "title",ascending: true)
-        
-        
-        
-        tableView.reloadData()
-        
-    }
+            if let category = selectedCategory {
+                // Sort the items based on pin status and then by title
+                todoItems = category.items.sorted(by: [
+                    SortDescriptor(keyPath: "isPinned", ascending: false),
+                    SortDescriptor(keyPath: "title", ascending: true)
+                ])
+            }
+            
+            tableView.reloadData()
+        }
     
 }
 
