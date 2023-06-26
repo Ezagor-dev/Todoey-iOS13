@@ -15,7 +15,46 @@ class CategoryViewController: SwipeTableViewController{
     
     var categories: Results<Category>?
     
-    
+    let colorPalette: [UIColor] = [
+        UIColor(hexString: "98EECC")!,
+        UIColor(hexString: "D0F5BE")!,
+        UIColor(hexString: "FBFFDC")!,
+        UIColor(hexString: "A4907C")!,
+        UIColor(hexString: "164B60")!,
+        UIColor(hexString: "1B6B93")!,
+        UIColor(hexString: "4FC0D0")!,
+        UIColor(hexString: "A2FF86")!,
+        UIColor(hexString: "2D4356")!,
+        UIColor(hexString: "435B66")!,
+        UIColor(hexString: "A76F6F")!,
+        UIColor(hexString: "EAB2A0")!,
+        UIColor(hexString: "525FE1")!,
+        UIColor(hexString: "F86F03")!,
+        UIColor(hexString: "FFA41B")!,
+        UIColor(hexString: "FFF6F4")!,
+        UIColor(hexString: "F1C27B")!,
+        UIColor(hexString: "FFD89C")!,
+        UIColor(hexString: "A2CDB0")!,
+        UIColor(hexString: "85A389")!,
+        UIColor(hexString: "A0C49D")!,
+        UIColor(hexString: "C4D7B2")!,
+        UIColor(hexString: "E1ECC8")!,
+        UIColor(hexString: "F7FFE5")!,
+        UIColor(hexString: "22A699")!,
+        UIColor(hexString: "F2BE22")!,
+        UIColor(hexString: "F29727")!,
+        UIColor(hexString: "606C5D")!,
+        UIColor(hexString: "FFF4F4")!,
+        UIColor(hexString: "F7E6C4")!,
+        UIColor(hexString: "F1C376")!,
+        UIColor(hexString: "9AC5F4")!,
+        UIColor(hexString: "99DBF5")!,
+        UIColor(hexString: "A7ECEE")!,
+        UIColor(hexString: "FFEEBB")!,
+        UIColor(hexString: "79E0EE")!,
+        UIColor(hexString: "98EECC")!,
+        // Add more colors to the palette as desired
+    ]
     
     
     override func viewDidLoad() {
@@ -150,6 +189,39 @@ class CategoryViewController: SwipeTableViewController{
         }
     }
     
+    //MARK: - Edit Data From Swipe
+    
+    override func editModel(at indexPath: IndexPath) {
+            let alertController = UIAlertController(title: "Edit Category", message: "", preferredStyle: .alert)
+            let category = categories?[indexPath.row]
+            
+            alertController.addTextField { (textField) in
+                textField.text = category?.name
+                textField.autocapitalizationType = .words
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            let saveAction = UIAlertAction(title: "Save", style: .default) { (_) in
+                if let newName = alertController.textFields?.first?.text?.capitalized,
+                   let category = category {
+                    do {
+                        try self.realm.write {
+                            category.name = newName
+                        }
+                    } catch {
+                        print("Error updating category name: \(error)")
+                    }
+                    self.tableView.reloadData()
+                }
+            }
+            
+            alertController.addAction(cancelAction)
+            alertController.addAction(saveAction)
+            
+            present(alertController, animated: true, completion: nil)
+        }
+    
     
     //MARK: - Add New Categories
     
@@ -161,10 +233,11 @@ class CategoryViewController: SwipeTableViewController{
         let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
-            let randomColor2 = UIColor().randomFlat()
+            let randomColorIndex = Int.random(in: 0..<self.colorPalette.count)
+            let randomColor = self.colorPalette[randomColorIndex]
             let newCategory = Category()
-            newCategory.name = textField.text!
-            newCategory.colour = randomColor2.toHexString() ?? ""
+            newCategory.name = textField.text!.capitalized
+            newCategory.colour = randomColor.toHexString() ?? ""
 
             
             
@@ -176,6 +249,7 @@ class CategoryViewController: SwipeTableViewController{
         alert.addTextField { (field) in
             textField = field
             textField.placeholder = "Add a new category"
+            textField.autocapitalizationType = .words
         }
         present(alert, animated: true,completion: nil)
         

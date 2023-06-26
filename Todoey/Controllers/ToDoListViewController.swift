@@ -132,6 +132,39 @@ class ToDoListViewController: SwipeTableViewController {
         
     }
     
+    //MARK: Edit Data From Swipe
+    override func editModel(at indexPath: IndexPath) {
+        let alert = UIAlertController(title: "Edit Item", message: "", preferredStyle: .alert)
+        var textField = UITextField()
+        
+        let action = UIAlertAction(title: "Update", style: .default) { (action) in
+            if let item = self.todoItems?[indexPath.row] {
+                do {
+                    try self.realm.write {
+                        item.title = textField.text!.capitalized
+                    }
+                } catch {
+                    print("Error updating item: \(error)")
+                }
+            }
+            self.tableView.reloadData()
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alert.addTextField { (field) in
+            textField = field
+            textField.text = self.todoItems?[indexPath.row].title
+            textField.autocapitalizationType = .sentences
+        }
+        
+        alert.addAction(action)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+
+    
     //MARK: - Delete Data From Swipe
     
     override func updateModel(at indexPath: IndexPath) {
@@ -163,7 +196,7 @@ class ToDoListViewController: SwipeTableViewController {
                 do{
                     try self.realm.write{
                         let newItem = Item()
-                        newItem.title = textField.text!
+                        newItem.title = textField.text!.capitalized
                         newItem.dateCreated = Date()
                         currentCategory.items.append(newItem)
                     }   }catch{
@@ -176,6 +209,7 @@ class ToDoListViewController: SwipeTableViewController {
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create new item"
             textField = alertTextField
+            textField.autocapitalizationType = .words
             
         }
         

@@ -41,10 +41,15 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
             
         }
         
+        let editAction = SwipeAction(style: .default, title: "Edit") { action, indexPath in
+                    self.editModel(at: indexPath)
+                }
+        
         // Customize the action appearance
         deleteAction.image = UIImage(named: "delete-icon")
+        editAction.image = UIImage(systemName: "pencil")
         
-        return [deleteAction]
+        return [deleteAction, editAction]
     }
     
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
@@ -59,6 +64,10 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
         print("Item deleted from superclass.")
         
     }
+    func editModel(at indexPath: IndexPath) {
+            // To be implemented in subclasses
+        print("Item edited from superclass.")
+        }
 }
 
 extension UIColor {
