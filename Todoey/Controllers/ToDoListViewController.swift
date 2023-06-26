@@ -67,7 +67,7 @@ class ToDoListViewController: SwipeTableViewController {
             
             
             
-            //            searchBar.barTintColor = UIColor(hexString: colourHex)
+            
         }
     }
     
@@ -92,6 +92,12 @@ class ToDoListViewController: SwipeTableViewController {
             // value = condition ? valueIfTrue : valueIfFalse
             
             cell.accessoryType = item.done ? .checkmark : .none
+            if let categoryColor = UIColor(hexString: selectedCategory?.colour ?? "") {
+                            let contrastColor = calculateContrastColor(forColor: categoryColor)
+                            cell.tintColor = contrastColor
+                            cell.accessoryView?.tintColor = contrastColor
+                        }
+            
             let startColor = UIColor(hexString: selectedCategory!.colour) ?? UIColor(red: 152/255, green: 238/255, blue: 204/255, alpha: 1.0)
             let maxItems = CGFloat(todoItems?.count ?? 1)
             let percentage = CGFloat(indexPath.row) / maxItems

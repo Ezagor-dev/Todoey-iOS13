@@ -232,27 +232,32 @@ class CategoryViewController: SwipeTableViewController{
         
         let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
         
-        let action = UIAlertAction(title: "Add", style: .default) { (action) in
-            let randomColorIndex = Int.random(in: 0..<self.colorPalette.count)
-            let randomColor = self.colorPalette[randomColorIndex]
-            let newCategory = Category()
-            newCategory.name = textField.text!.capitalized
-            newCategory.colour = randomColor.toHexString() ?? ""
+        let addAction = UIAlertAction(title: "Add", style: .default) { (_) in
+                    let categoryName = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+                    
+                    if let name = categoryName, !name.isEmpty {
+                        let randomColor = UIColor().randomFlat()
+                        let newCategory = Category()
+                        newCategory.name = name.capitalized
+                        newCategory.colour = randomColor.toHexString() ?? ""
 
-            
-            
-            self.save(category: newCategory)
-        }
-        
-        alert.addAction(action)
-        
-        alert.addTextField { (field) in
-            textField = field
-            textField.placeholder = "Add a new category"
-            textField.autocapitalizationType = .words
-        }
-        present(alert, animated: true,completion: nil)
-        
-    }
+                        self.save(category: newCategory)
+                    }
+                }
+
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+                alert.addAction(addAction)
+                alert.addAction(cancelAction)
+
+                alert.addTextField { (field) in
+                    textField = field
+                    textField.placeholder = "Add a new category"
+                    textField.autocapitalizationType = .words
+                }
+                
+                present(alert, animated: true, completion: nil)
+            }
+
     
 }
