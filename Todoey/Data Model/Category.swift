@@ -12,6 +12,7 @@ import RealmSwift
 class Category: Object {
     @objc dynamic var name: String = ""
     @objc dynamic var colour: String = ""
+    @objc dynamic var isPinned: Bool = false
     let items = List<Item>()
     
 }

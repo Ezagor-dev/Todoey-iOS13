@@ -37,7 +37,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ezagor_quill_pen" width="653" height="653"/>
+        <image name="ezagor_quill_pen" width="217.66667175292969" height="217.66667175292969"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

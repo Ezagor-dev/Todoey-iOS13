@@ -8,12 +8,15 @@
 
 import UIKit
 import RealmSwift
+import SwipeCellKit
 
 class CategoryViewController: SwipeTableViewController{
     
     let realm = try! Realm()
     
     var categories: Results<Category>?
+    var pinnedCategories: Results<Category>?
+        var unpinnedCategories: Results<Category>?
     
     let colorPalette: [UIColor] = [
         UIColor(hexString: "98EECC")!,
@@ -97,41 +100,24 @@ class CategoryViewController: SwipeTableViewController{
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        
-        let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        
-        
-        if let category = categories?[indexPath.row]{
+            let cell = super.tableView(tableView, cellForRowAt: indexPath)
             
-            cell.textLabel?.text = categories?[indexPath.row].name
-            
-            if let categoryColor = UIColor(hexString: category.colour) {
+            if let category = categories?[indexPath.row] {
+                cell.textLabel?.text = category.name
+                if let categoryColor = UIColor(hexString: category.colour) {
                     cell.backgroundColor = categoryColor
-                cell.textLabel?.textColor = calculateContrastColor(forColor: categoryColor)
+                    cell.textLabel?.textColor = calculateContrastColor(forColor: categoryColor)
+                } else {
+                    cell.backgroundColor = UIColor(hexString: "98EECC")
+                    cell.textLabel?.textColor = .black
+                }
             } else {
-                cell.backgroundColor = UIColor(hexString: "98EECC")
-                cell.textLabel?.textColor = .black
+                cell.textLabel?.text = "No Categories added yet"
+                cell.backgroundColor = UIColor(hexString: "1D9BF6")
             }
             
-            
-//            let startColor = UIColor(red: 152/255, green: 238/255, blue: 204/255, alpha: 1.0)
-//                let maxItems = CGFloat(categories?.count ?? 1)
-//                let percentage = CGFloat(indexPath.row) / maxItems
-//                let endColor = startColor.darken(byPercentage: 0.3 + (0.4 * percentage)) // Adjust the darkening factor to achieve the desired effect
-//
-//                cell.backgroundColor = endColor
-            
-        }else{
-            cell.textLabel?.text = "No Categories added yet"
-                cell.backgroundColor = UIColor(hexString: "1D9BF6")
+            return cell
         }
-        
-        
-        
-        return cell
-        
-    }
     
     
     
@@ -165,12 +151,18 @@ class CategoryViewController: SwipeTableViewController{
         tableView.reloadData()
     }
     
-    func loadCategories(){
-        
-        categories = realm.objects(Category.self)
-        
-        tableView.reloadData()
-    }
+    func loadCategories() {
+            categories = realm.objects(Category.self).sorted(byKeyPath: "isPinned", ascending: false)
+            tableView.reloadData()
+        }
+
+
+
+
+
+
+
+
     
     
     //MARK: - Delete Data From Swipe
@@ -188,6 +180,56 @@ class CategoryViewController: SwipeTableViewController{
             }
         }
     }
+    
+    //MARK: - Pin Data
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard orientation == .right else { return nil }
+        
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+            self.updateModel(at: indexPath)
+        }
+        
+        let editAction = SwipeAction(style: .default, title: "Edit") { action, indexPath in
+            self.editModel(at: indexPath)
+        }
+        
+        let pinAction = SwipeAction(style: .default, title: "Pin") { action, indexPath in
+            print("pinned")
+            self.pinCategory(at: indexPath)
+        }
+        
+        // Customize the action appearance
+        deleteAction.image = UIImage(named: "delete-icon")
+        editAction.image = UIImage(systemName: "pencil")
+        pinAction.image = UIImage(systemName: "pin.fill")
+        
+        return [deleteAction, editAction, pinAction]
+    }
+
+    func pinCategory(at indexPath: IndexPath) {
+        if let category = categories?[indexPath.row] {
+            do {
+                try realm.write {
+                    category.isPinned = !category.isPinned
+                    
+                    let allCategories = realm.objects(Category.self).sorted(byKeyPath: "isPinned", ascending: false)
+                    let pinnedCategories = allCategories.filter("isPinned == true")
+                    let unpinnedCategories = allCategories.filter("isPinned == false")
+                    
+                    let concatenatedCategories = Array(pinnedCategories) + Array(unpinnedCategories)
+                    categories = realm.objects(Category.self).filter("FALSEPREDICATE")
+                    categories = realm.objects(Category.self).sorted(byKeyPath: "isPinned", ascending: false)
+                    
+                    tableView.reloadData()
+                }
+            } catch {
+                print("Error updating category pin status, \(error)")
+            }
+        }
+    }
+
+
     
     //MARK: - Edit Data From Swipe
     
