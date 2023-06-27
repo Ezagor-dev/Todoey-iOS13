@@ -28,6 +28,8 @@ class ToDoListViewController: SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .black
+        
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
     }
@@ -46,16 +48,34 @@ class ToDoListViewController: SwipeTableViewController {
         return luminance > threshold ? .black : .white
     }
     
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let selectedBackgroundView = UIView()
+            selectedBackgroundView.backgroundColor = .black
+            cell.selectedBackgroundView = selectedBackgroundView
+        if cell.contentView.layer.cornerRadius != 10.0 {
+                // Set the corner radius of the cell's content view
+                cell.contentView.layer.cornerRadius = 10.0
+            }
+        let verticalPadding: CGFloat = 10.0
+        let maskLayer = CALayer()
+        maskLayer.backgroundColor = UIColor.white.cgColor
+        maskLayer.cornerRadius = 10.0
+        maskLayer.frame = CGRect(
+            x: cell.contentView.frame.origin.x,
+            y: cell.contentView.frame.origin.y + verticalPadding,
+            width: cell.contentView.frame.width,
+            height: cell.contentView.frame.height - (2 * verticalPadding)
+        )
+        cell.contentView.layer.mask = maskLayer
+        cell.contentView.layer.masksToBounds = true
+    }
+
+    
     override func viewWillAppear(_ animated: Bool) {
         if let colourHex = selectedCategory?.colour{
-            
             title = selectedCategory!.name
-            
             guard let navBar = navigationController?.navigationBar else{
                 fatalError("Navigation controller does not exist.")}
-            
-            
-            
             if let colorHex = selectedCategory?.colour, let navBarColour = UIColor(hexString: colorHex) {
                 navBar.backgroundColor = navBarColour
                 let contrastColor = calculateContrastColor(forColor: navBarColour)
@@ -64,11 +84,6 @@ class ToDoListViewController: SwipeTableViewController {
                 searchBar.barTintColor = UIColor(hexString: selectedCategory!.colour)
                 searchBar.searchTextField.backgroundColor = UIColor.white
             }
-            
-            
-            
-            
-            
         }
     }
     
@@ -82,23 +97,31 @@ class ToDoListViewController: SwipeTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        
+
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
-            
             cell.accessoryType = item.done ? .checkmark : .none
-            
+
             if let categoryColor = UIColor(hexString: selectedCategory?.colour ?? "") {
                 let contrastColor = calculateContrastColor(forColor: categoryColor)
+                cell.contentView.layer.borderWidth = 1.0
+                cell.contentView.layer.borderColor = categoryColor.cgColor
+                cell.contentView.layer.backgroundColor = categoryColor.cgColor
+                cell.textLabel?.textColor = indexPath.row == 0 && isColorDark(categoryColor) ? .black : contrastColor
                 cell.tintColor = contrastColor
                 cell.accessoryView?.tintColor = contrastColor
+            } else {
+                // Set a default border color if the category color is invalid
+                cell.contentView.layer.borderWidth = 1.0
+                cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
+                cell.textLabel?.textColor = .black
             }
-            
+
             let startColor = UIColor(hexString: selectedCategory?.colour ?? "") ?? UIColor(red: 152/255, green: 238/255, blue: 204/255, alpha: 1.0)
             let maxItems = CGFloat(todoItems?.count ?? 1)
             let percentage = CGFloat(indexPath.row) / maxItems
             let endColor = startColor.darken(byPercentage: 0.3 + (0.4 * percentage))
-            
+
             if item.isPinned {
                 cell.backgroundColor = endColor
                 cell.textLabel?.textColor = calculateContrastColor(forColor: endColor)
@@ -108,12 +131,38 @@ class ToDoListViewController: SwipeTableViewController {
             }
         } else {
             cell.textLabel?.text = "No Items Added"
+            cell.contentView.layer.borderWidth = 1.0
+            cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
             cell.textLabel?.textColor = .black
             cell.backgroundColor = UIColor(hexString: "79C0D0")
         }
-        
+
+        // Set the background color of the cell
+        cell.backgroundColor = .black
+
         return cell
     }
+
+    func isColorDark(_ color: UIColor) -> Bool {
+        guard let components = color.cgColor.components else {
+            return false
+        }
+
+        let red = components[0]
+        let green = components[1]
+        let blue = components[2]
+
+        let threshold: CGFloat = 0.5
+        let luminance = (red * 0.299) + (green * 0.587) + (blue * 0.114)
+
+        return luminance < threshold
+    }
+
+
+
+
+
+
 
 
 

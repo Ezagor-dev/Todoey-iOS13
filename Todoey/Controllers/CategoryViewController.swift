@@ -13,7 +13,8 @@ import SwipeCellKit
 class CategoryViewController: SwipeTableViewController{
     
     let realm = try! Realm()
-    
+    var selectedCategory: Category?
+
     var categories: Results<Category>?
     var pinnedCategories: Results<Category>?
         var unpinnedCategories: Results<Category>?
@@ -62,6 +63,7 @@ class CategoryViewController: SwipeTableViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .black
         
         loadCategories()
         
@@ -70,11 +72,46 @@ class CategoryViewController: SwipeTableViewController{
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        guard let navBar = navigationController?.navigationBar else{
-            fatalError("Navigation controller does not exist.")}
+        super.viewWillAppear(animated)
         
-        navBar.backgroundColor = UIColor(hexString: "1D9BF6")
+        // Set the background color of the navigation bar to black
+        navigationController?.navigationBar.barTintColor = .black
+        
+        // Set the title color to white
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        
+        // Reset the category color to black in case it was set previously
+        if let navBar = navigationController?.navigationBar {
+            let categoryColor = UIColor(hexString: selectedCategory?.colour ?? "")
+            navBar.backgroundColor = .black
+            navBar.tintColor = .white
+            navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+            
+            categoryColor?.withAlphaComponent(1.0)
+        }
     }
+
+
+
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        guard let navBar = navigationController?.navigationBar else {
+            fatalError("Navigation controller does not exist.")
+        }
+        
+        // Set the background color of the navigation bar to black
+        navBar.barTintColor = .black
+        
+        // Set the title color to white
+        navBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+    }
+
+
+
+    
+   
     
     
     
@@ -98,26 +135,82 @@ class CategoryViewController: SwipeTableViewController{
         
         return luminance > threshold ? .black : .white
     }
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        
+        
+        
+            let selectedBackgroundView = UIView()
+            selectedBackgroundView.backgroundColor = .black
+            cell.selectedBackgroundView = selectedBackgroundView
+        if cell.contentView.layer.cornerRadius != 10.0 {
+                // Set the corner radius of the cell's content view
+                cell.contentView.layer.cornerRadius = 10.0
+            }
+
+        
+        let verticalPadding: CGFloat = 10.0
+        let maskLayer = CALayer()
+        maskLayer.backgroundColor = UIColor.white.cgColor
+        maskLayer.cornerRadius = 10.0
+        maskLayer.frame = CGRect(
+            x: cell.contentView.frame.origin.x,
+            y: cell.contentView.frame.origin.y + verticalPadding,
+            width: cell.contentView.frame.width,
+            height: cell.contentView.frame.height - (2 * verticalPadding)
+        )
+        cell.contentView.layer.mask = maskLayer
+        cell.contentView.layer.masksToBounds = true
+    }
+
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        
+        // Add spacing between rows
+        let space: CGFloat = 10.0
+            let inset = UIEdgeInsets(top: space, left: space, bottom: space, right: space)
+            cell.frame = cell.frame.inset(by: inset)
+        // Set the corner radius of the cell's content view
+        cell.contentView.layer.cornerRadius = cell.contentView.frame.height / 2
+        
+        
+        // Add a border to the cell's content view
+        cell.contentView.layer.borderWidth = 1.0
+        
+        if let category = categories?[indexPath.row] {
+            cell.textLabel?.text = category.name
+            let completedItems = category.items.filter("done == true")
+            let totalCount = category.items.count
+            let completedCount = completedItems.count
             
-            if let category = categories?[indexPath.row] {
-                cell.textLabel?.text = category.name
-                if let categoryColor = UIColor(hexString: category.colour) {
-                    cell.backgroundColor = categoryColor
-                    cell.textLabel?.textColor = calculateContrastColor(forColor: categoryColor)
-                } else {
-                    cell.backgroundColor = UIColor(hexString: "98EECC")
-                    cell.textLabel?.textColor = .black
-                }
+            cell.detailTextLabel?.text = "\(completedCount)/\(totalCount)"
+            
+            if let categoryColor = UIColor(hexString: category.colour) {
+                // Set the border color of the cell's content view to the category color
+                cell.contentView.layer.borderColor = categoryColor.cgColor
+                cell.contentView.layer.backgroundColor = categoryColor.cgColor
+                cell.textLabel?.textColor = calculateContrastColor(forColor: categoryColor)
             } else {
-                cell.textLabel?.text = "No Categories added yet"
-                cell.backgroundColor = UIColor(hexString: "1D9BF6")
+                // Set a default border color if the category color is invalid
+                cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
+                cell.textLabel?.textColor = .black
             }
-            
-            return cell
+        } else {
+            cell.textLabel?.text = "No Categories added yet"
+            cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
+            cell.textLabel?.textColor = .black
         }
+        
+        // Set the background color of the cell
+        cell.backgroundColor = .black
+        
+        return cell
+    }
+
+
+  
+
     
     
     
@@ -126,15 +219,22 @@ class CategoryViewController: SwipeTableViewController{
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "goToItems", sender: self)
         tableView.deselectRow(at: indexPath, animated: true)
+        if let cell = tableView.cellForRow(at: indexPath) {
+                let selectedBackgroundView = UIView()
+                selectedBackgroundView.backgroundColor = .black
+                cell.selectedBackgroundView = selectedBackgroundView
+            }
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let destinationVC = segue.destination as! ToDoListViewController
-        
         if let indexPath = tableView.indexPathForSelectedRow {
-            destinationVC.selectedCategory = categories?[indexPath.row]
+            let selectedCategory = categories?[indexPath.row]
+            let destinationVC = segue.destination as! ToDoListViewController
+            destinationVC.selectedCategory = selectedCategory
         }
     }
+
     
     
     
