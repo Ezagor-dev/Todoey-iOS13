@@ -304,6 +304,9 @@ class CategoryViewController: SwipeTableViewController{
         editAction.image = UIImage(systemName: "pencil")
         pinAction.image = UIImage(systemName: "pin.fill")
         
+        editAction.backgroundColor = .blue
+        pinAction.backgroundColor = .gray
+        
         return [deleteAction, editAction, pinAction]
     }
 
