@@ -5,15 +5,16 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
     private let pageControl = UIPageControl()
     private let getStartedButton = UIButton(type: .custom)
     private let skipButton = UIButton(type: .custom)
+    
 
     private let pages: [OnboardingPage] = [
-        OnboardingPage(imageName: "scribble.variable",
+        OnboardingPage(imageName: "onboarding-1",
                        title: "Stay Organized",
                        description: "Effortlessly manage your tasks and stay organized with AshList. Keep track of everything you need to do in one convenient place."),
-        OnboardingPage(imageName: "paintpalette.fill",
+        OnboardingPage(imageName: "onboarding-2",
                        title: "Customize Your Workflow",
                        description: "Tailor AshList to fit your unique workflow. Create categories, create items, and personalize your task management experience."),
-        OnboardingPage(imageName: "dial.min.fill",
+        OnboardingPage(imageName: "onboarding-3",
                        title: "Boost Productivity",
                        description: "Stay focused, accomplish more, and experience a sense of accomplishment as you make progress towards your targets.")
     ]
@@ -46,10 +47,13 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
     private func createPageView(page: OnboardingPage, frame: CGRect) -> UIView {
         let pageView = UIView(frame: frame)
 
-        let imageView = UIImageView(frame: CGRect(x: (frame.width - 100) / 2, y: 100, width: 100, height: 100))
-        imageView.image = UIImage(systemName: page.imageName)
-        imageView.tintColor = .black
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
+        imageView.image = UIImage(named: page.imageName)
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         pageView.addSubview(imageView)
+
+
 
         let titleLabel = UILabel(frame: CGRect(x: 20, y: imageView.frame.maxY + 20, width: frame.width - 40, height: 30))
         titleLabel.text = page.title
@@ -73,7 +77,7 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
         pageControl.numberOfPages = pages.count
         pageControl.currentPage = 0
         pageControl.pageIndicatorTintColor = .lightGray
-        pageControl.currentPageIndicatorTintColor = .black
+        pageControl.currentPageIndicatorTintColor = UIColor(hexString: "D50C61")
 
         let pageControlSize = pageControl.size(forNumberOfPages: pages.count)
         let pageControlX = (view.bounds.width - pageControlSize.width) / 2
@@ -85,9 +89,14 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
     private func setupButtons() {
         skipButton.setTitle("Skip", for: .normal)
         skipButton.setTitleColor(.white, for: .normal)
-        skipButton.backgroundColor = .gray
+        skipButton.backgroundColor = UIColor(hexString: "D50C61")
         skipButton.layer.cornerRadius = 8
         skipButton.addTarget(self, action: #selector(skipButtonTapped), for: .touchUpInside)
+        skipButton.layer.shadowColor = UIColor.white.cgColor
+        skipButton.layer.shadowOpacity = 0.7
+        skipButton.layer.shadowOffset = CGSize(width: 0, height: 2)
+        skipButton.layer.shadowRadius = 4
+
 
         getStartedButton.setTitle("Get Started", for: .normal)
         getStartedButton.setTitleColor(.white, for: .normal)
