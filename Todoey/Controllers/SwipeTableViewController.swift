@@ -16,6 +16,8 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
         
         var cell: UITableViewCell?
         
+
+        
         super.viewDidLoad()
         
         tableView.rowHeight = 80.0

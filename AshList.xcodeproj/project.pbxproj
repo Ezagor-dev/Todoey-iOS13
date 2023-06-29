@@ -14,7 +14,8 @@
 		E6D058DE2A448EFB00BD6819 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D058DD2A448EFB00BD6819 /* Category.swift */; };
 		E6D058E12A44D5FD00BD6819 /* SwipeCellKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6D058E02A44D5FD00BD6819 /* SwipeCellKit */; };
 		E6D058E52A48BAED00BD6819 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D058E42A48BAED00BD6819 /* SwipeTableViewController.swift */; };
-		E6D058E72A4DCC3500BD6819 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D058E62A4DCC3500BD6819 /* ContentView.swift */; };
+		E6D058F92A4DF12C00BD6819 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D058F82A4DF12C00BD6819 /* OnboardingView.swift */; };
+		E6D058FB2A4DF4D300BD6819 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D058FA2A4DF4D300BD6819 /* OnboardingViewController.swift */; };
 		EB2BE4FA239524DB00FB933B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2BE4F9239524DB00FB933B /* AppDelegate.swift */; };
 		EB2BE4FE239524DB00FB933B /* ToDoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2BE4FD239524DB00FB933B /* ToDoListViewController.swift */; };
 		EB2BE501239524DB00FB933B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB2BE4FF239524DB00FB933B /* Main.storyboard */; };
@@ -27,7 +28,8 @@
 		E6D058DB2A448EEB00BD6819 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		E6D058DD2A448EFB00BD6819 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		E6D058E42A48BAED00BD6819 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
-		E6D058E62A4DCC3500BD6819 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		E6D058F82A4DF12C00BD6819 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		E6D058FA2A4DF4D300BD6819 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		EB2BE4F6239524DB00FB933B /* AshList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AshList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2BE4F9239524DB00FB933B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB2BE4FD239524DB00FB933B /* ToDoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListViewController.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				E6D058D22A40CDF700BD6819 /* CategoryViewController.swift */,
 				EB2BE4FD239524DB00FB933B /* ToDoListViewController.swift */,
 				E6D058E42A48BAED00BD6819 /* SwipeTableViewController.swift */,
+				E6D058FA2A4DF4D300BD6819 /* OnboardingViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -74,7 +77,6 @@
 			isa = PBXGroup;
 			children = (
 				EB2BE4FF239524DB00FB933B /* Main.storyboard */,
-				E6D058E62A4DCC3500BD6819 /* ContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -84,6 +86,7 @@
 			children = (
 				EB2BE502239524DC00FB933B /* Assets.xcassets */,
 				EB2BE504239524DC00FB933B /* LaunchScreen.storyboard */,
+				E6D058F82A4DF12C00BD6819 /* OnboardingView.swift */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -200,10 +203,11 @@
 			files = (
 				E6D058DC2A448EEB00BD6819 /* Item.swift in Sources */,
 				E6D058D32A40CDF700BD6819 /* CategoryViewController.swift in Sources */,
-				E6D058E72A4DCC3500BD6819 /* ContentView.swift in Sources */,
 				EB2BE4FE239524DB00FB933B /* ToDoListViewController.swift in Sources */,
+				E6D058FB2A4DF4D300BD6819 /* OnboardingViewController.swift in Sources */,
 				EB2BE4FA239524DB00FB933B /* AppDelegate.swift in Sources */,
 				E6D058E52A48BAED00BD6819 /* SwipeTableViewController.swift in Sources */,
+				E6D058F92A4DF12C00BD6819 /* OnboardingView.swift in Sources */,
 				E6D058DE2A448EFB00BD6819 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
