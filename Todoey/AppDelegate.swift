@@ -23,6 +23,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             } else {
                 showOnboardingViewController()
             }
+        do{
+            _ = try Realm()
+        }catch{
+            print("Error initialising new realm, \(error)")
+        }
             
             return true
         }
@@ -42,11 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
             
-//            do{
-//                _ = try Realm()
-//            }catch{
-//                print("Error initialising new realm, \(error)")
-//            }
+           
             
            
     }

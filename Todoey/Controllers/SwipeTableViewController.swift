@@ -73,6 +73,12 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
 }
 
 extension UIColor {
+    var isLight: Bool {
+            var white: CGFloat = 0.0
+            getWhite(&white, alpha: nil)
+            return white >= 0.5
+        }
+    
     convenience init?(hexString: String) {
         var formattedString = hexString.trimmingCharacters(in: .whitespacesAndNewlines)
         if formattedString.hasPrefix("#") {

@@ -108,8 +108,8 @@ class ToDoListViewController: SwipeTableViewController {
                 cell.contentView.layer.borderColor = categoryColor.cgColor
                 cell.contentView.layer.backgroundColor = categoryColor.cgColor
                 cell.textLabel?.textColor = indexPath.row == 0 && isColorDark(categoryColor) ? .black : contrastColor
-                cell.tintColor = contrastColor
-                cell.accessoryView?.tintColor = contrastColor
+                cell.tintColor = .white
+//                cell.accessoryView?.tintColor = contrastColor
             } else {
                 // Set a default border color if the category color is invalid
                 cell.contentView.layer.borderWidth = 1.0
@@ -139,6 +139,7 @@ class ToDoListViewController: SwipeTableViewController {
 
         // Set the background color of the cell
         cell.backgroundColor = .black
+//        cell.accessoryView?.tintColor = .white
 
         return cell
     }
