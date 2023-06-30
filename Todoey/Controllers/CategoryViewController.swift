@@ -181,15 +181,16 @@ class CategoryViewController: SwipeTableViewController{
             label.frame.size = CGSize(width: labelWidth, height: .greatestFiniteMagnitude)
             label.sizeToFit()
 
-            let lines = label.calculateMaxLines(width: labelWidth)
+            let lines = ceil(label.frame.height / label.font.lineHeight)
             let lineSpacing: CGFloat = 4 // Adjust the line spacing as needed
-            let cellHeight = max(minHeight, (label.font.lineHeight * CGFloat(lines)) + (lineSpacing * CGFloat(lines - 1)) + labelInsets.top + labelInsets.bottom)
+            let cellHeight = max(minHeight, (label.font.lineHeight * lines) + (lineSpacing * (lines - 1)) + labelInsets.top + labelInsets.bottom)
 
             return cellHeight
         }
 
         return defaultHeight
     }
+
 
 
     
