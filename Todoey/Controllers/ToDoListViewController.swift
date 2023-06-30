@@ -137,8 +137,6 @@ class ToDoListViewController: SwipeTableViewController {
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
             cell.accessoryType = item.done ? .checkmark : .none
-            cell.textLabel?.lineBreakMode = .byWordWrapping
-            cell.textLabel?.numberOfLines = 0
 
             if let categoryColor = UIColor(hexString: selectedCategory?.colour ?? "") {
                 let contrastColor = calculateContrastColor(forColor: categoryColor)
@@ -146,8 +144,20 @@ class ToDoListViewController: SwipeTableViewController {
                 cell.contentView.layer.borderColor = categoryColor.cgColor
                 cell.contentView.layer.backgroundColor = categoryColor.cgColor
                 cell.textLabel?.textColor = indexPath.row == 0 && isColorDark(categoryColor) ? .black : contrastColor
-                cell.tintColor = .white
-//                cell.accessoryView?.tintColor = contrastColor
+                cell.tintColor = contrastColor
+                
+                // Update label's properties
+                cell.textLabel?.numberOfLines = 0
+                cell.textLabel?.lineBreakMode = .byWordWrapping
+                cell.textLabel?.preferredMaxLayoutWidth = tableView.bounds.width - 20
+                
+                // Adjust cell's height based on text length
+                let font = UIFont.systemFont(ofSize: 17)
+                let text = item.title
+                let textHeight = text.boundingRect(with: CGSize(width: tableView.bounds.width - 20, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil).height
+                let minHeight: CGFloat = 44
+                let cellHeight = max(minHeight, textHeight + 20)
+                cell.frame.size.height = cellHeight
             } else {
                 // Set a default border color if the category color is invalid
                 cell.contentView.layer.borderWidth = 1.0
@@ -174,16 +184,15 @@ class ToDoListViewController: SwipeTableViewController {
             cell.textLabel?.textColor = .black
             cell.backgroundColor = UIColor(hexString: "79C0D0")
             cell.textLabel?.lineBreakMode = .byTruncatingTail // Truncate the text if no item is added
-                cell.textLabel?.numberOfLines = 1
-
+            cell.textLabel?.numberOfLines = 1 // Show only one line for the placeholder text
         }
 
         // Set the background color of the cell
         cell.backgroundColor = .black
-//        cell.accessoryView?.tintColor = .white
 
         return cell
     }
+
 
     func isColorDark(_ color: UIColor) -> Bool {
         guard let components = color.cgColor.components else {
