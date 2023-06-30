@@ -94,8 +94,38 @@ class ToDoListViewController: SwipeTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        let minHeight: CGFloat = 80
+        let defaultHeight: CGFloat = 44
+
+        if let item = todoItems?[indexPath.row] {
+            let text = item.title
+            let labelWidth = tableView.bounds.width - 16 // Adjust the padding as needed
+            let labelFont = UIFont.systemFont(ofSize: 17)
+            let labelInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) // Adjust the insets as needed
+
+            let label = UILabel()
+            label.font = labelFont
+            label.text = text
+            label.numberOfLines = 0
+            label.frame.size = CGSize(width: labelWidth, height: .greatestFiniteMagnitude)
+            label.sizeToFit()
+
+            let lines = ceil(label.frame.height / label.font.lineHeight)
+            let lineSpacing: CGFloat = 4 // Adjust the line spacing as needed
+            let cellHeight = max(minHeight, (label.font.lineHeight * lines) + (lineSpacing * (lines - 1)) + labelInsets.top + labelInsets.bottom)
+
+            return cellHeight
+        }
+
+        return defaultHeight
     }
+
+
+
+
+
+
+
 
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44 // Set an initial estimated height for better performance
@@ -108,7 +138,7 @@ class ToDoListViewController: SwipeTableViewController {
             cell.textLabel?.text = item.title
             cell.accessoryType = item.done ? .checkmark : .none
             cell.textLabel?.lineBreakMode = .byWordWrapping
-                    cell.textLabel?.numberOfLines = 0
+            cell.textLabel?.numberOfLines = 0
 
             if let categoryColor = UIColor(hexString: selectedCategory?.colour ?? "") {
                 let contrastColor = calculateContrastColor(forColor: categoryColor)
