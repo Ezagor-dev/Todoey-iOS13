@@ -14,5 +14,6 @@ class Category: Object {
     @objc dynamic var colour: String = ""
     @objc dynamic var isPinned: Bool = false
     let items = List<Item>()
+    @objc dynamic var createdDate: Date = Date() // Storing the creation date
     
 }

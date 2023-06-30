@@ -12,12 +12,14 @@ import SwipeCellKit
 
 class CategoryViewController: SwipeTableViewController{
     
+    
+    
     let realm = try! Realm()
     var selectedCategory: Category?
-
+    
     var categories: Results<Category>?
     var pinnedCategories: Results<Category>?
-        var unpinnedCategories: Results<Category>?
+    var unpinnedCategories: Results<Category>?
     
     let colorPalette: [UIColor] = [
         UIColor(hexString: "98EECC")!,
@@ -64,13 +66,13 @@ class CategoryViewController: SwipeTableViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
+        
         view.backgroundColor = .black
         
         loadCategories()
         
-//        tableView.separatorStyle = .none
-
+        //        tableView.separatorStyle = .none
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,10 +94,10 @@ class CategoryViewController: SwipeTableViewController{
             categoryColor?.withAlphaComponent(1.0)
         }
     }
-
-
-
-
+    
+    
+    
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -109,11 +111,11 @@ class CategoryViewController: SwipeTableViewController{
         // Set the title color to white
         navBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     }
-
-
-
     
-   
+    
+    
+    
+    
     
     
     
@@ -138,18 +140,14 @@ class CategoryViewController: SwipeTableViewController{
         return luminance > threshold ? .black : .white
     }
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
-        
-        
-        
-            let selectedBackgroundView = UIView()
-            selectedBackgroundView.backgroundColor = .black
-            cell.selectedBackgroundView = selectedBackgroundView
+        let selectedBackgroundView = UIView()
+        selectedBackgroundView.backgroundColor = .black
+        cell.selectedBackgroundView = selectedBackgroundView
         if cell.contentView.layer.cornerRadius != 10.0 {
-                // Set the corner radius of the cell's content view
-                cell.contentView.layer.cornerRadius = 10.0
-            }
-
+            // Set the corner radius of the cell's content view
+            cell.contentView.layer.cornerRadius = 10.0
+        }
+        
         
         let verticalPadding: CGFloat = 10.0
         let maskLayer = CALayer()
@@ -167,40 +165,48 @@ class CategoryViewController: SwipeTableViewController{
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let minHeight: CGFloat = 80
         let defaultHeight: CGFloat = 44
-
+        
         if let category = categories?[indexPath.row] {
             let text = category.name
             let labelWidth = tableView.bounds.width - 16 // Adjust the padding as needed
             let labelFont = UIFont.systemFont(ofSize: 17)
             let labelInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) // Adjust the insets as needed
-
+            
             let label = UILabel()
             label.font = labelFont
             label.text = text
             label.numberOfLines = 0
             label.frame.size = CGSize(width: labelWidth, height: .greatestFiniteMagnitude)
             label.sizeToFit()
-
+            
             let lines = ceil(label.frame.height / label.font.lineHeight)
             let lineSpacing: CGFloat = 4 // Adjust the line spacing as needed
             let cellHeight = max(minHeight, (label.font.lineHeight * lines) + (lineSpacing * (lines - 1)) + labelInsets.top + labelInsets.bottom)
-
+            
             return cellHeight
         }
-
+        
         return defaultHeight
     }
-
-
-
     
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
+        // Add the creation date label to the cell
+            let creationDateLabel = UILabel()
+            creationDateLabel.translatesAutoresizingMaskIntoConstraints = false
+            cell.contentView.addSubview(creationDateLabel)
+            
+            // Set the creation date label constraints
+            creationDateLabel.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 20).isActive = true
+            creationDateLabel.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -20).isActive = true
+            creationDateLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -10).isActive = true
+        
         // Add spacing between rows
         let space: CGFloat = 10.0
-            let inset = UIEdgeInsets(top: space, left: space, bottom: space, right: space)
-            cell.frame = cell.frame.inset(by: inset)
+        let inset = UIEdgeInsets(top: space, left: space, bottom: space, right: space)
+        cell.frame = cell.frame.inset(by: inset)
         // Set the corner radius of the cell's content view
         cell.contentView.layer.cornerRadius = cell.contentView.frame.height / 2
         
@@ -210,11 +216,22 @@ class CategoryViewController: SwipeTableViewController{
         
         if let category = categories?[indexPath.row] {
             cell.textLabel?.text = category.name
+            
+            // Display the creation date in the creation date label
+            let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+            dateFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a"
+            let creationDate = category.createdDate
+            let creationDateString = dateFormatter.string(from: creationDate)
+
+            creationDateLabel.text = "Created on \(creationDateString)"
+                    
+                    // Customize the appearance of the creation date label
+                    creationDateLabel.font = UIFont.italicSystemFont(ofSize: 12)
+                    creationDateLabel.textColor = UIColor.gray
             let completedItems = category.items.filter("done == true")
             let totalCount = category.items.count
             let completedCount = completedItems.count
-            
-            cell.detailTextLabel?.text = "\(completedCount)/\(totalCount)"
             
             if let categoryColor = UIColor(hexString: category.colour) {
                 // Set the border color of the cell's content view to the category color
@@ -240,10 +257,12 @@ class CategoryViewController: SwipeTableViewController{
             }
         } else {
             cell.textLabel?.text = "No Categories added yet"
+            cell.detailTextLabel?.text = ""
             cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
             cell.textLabel?.textColor = .black
             cell.textLabel?.lineBreakMode = .byTruncatingTail // Truncate the text if no item is added
             cell.textLabel?.numberOfLines = 1 // Show only one line for the placeholder text
+            creationDateLabel.text = ""
         }
         
         // Set the background color of the cell
@@ -251,10 +270,10 @@ class CategoryViewController: SwipeTableViewController{
         
         return cell
     }
-
-
-  
-
+    
+    
+    
+    
     
     
     
@@ -264,10 +283,10 @@ class CategoryViewController: SwipeTableViewController{
         performSegue(withIdentifier: "goToItems", sender: self)
         tableView.deselectRow(at: indexPath, animated: true)
         if let cell = tableView.cellForRow(at: indexPath) {
-                let selectedBackgroundView = UIView()
-                selectedBackgroundView.backgroundColor = .black
-                cell.selectedBackgroundView = selectedBackgroundView
-            }
+            let selectedBackgroundView = UIView()
+            selectedBackgroundView.backgroundColor = .black
+            cell.selectedBackgroundView = selectedBackgroundView
+        }
         
     }
     
@@ -278,7 +297,7 @@ class CategoryViewController: SwipeTableViewController{
             destinationVC.selectedCategory = selectedCategory
         }
     }
-
+    
     
     
     
@@ -296,17 +315,17 @@ class CategoryViewController: SwipeTableViewController{
     }
     
     func loadCategories() {
-            categories = realm.objects(Category.self).sorted(byKeyPath: "isPinned", ascending: false)
-            tableView.reloadData()
-        }
-
-
-
-
-
-
-
-
+        categories = realm.objects(Category.self).sorted(byKeyPath: "isPinned", ascending: false)
+        tableView.reloadData()
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     //MARK: - Delete Data From Swipe
@@ -353,7 +372,7 @@ class CategoryViewController: SwipeTableViewController{
         
         return [deleteAction, editAction, pinAction]
     }
-
+    
     func pinCategory(at indexPath: IndexPath) {
         if let category = categories?[indexPath.row] {
             do {
@@ -375,47 +394,47 @@ class CategoryViewController: SwipeTableViewController{
             }
         }
     }
-
-
+    
+    
     
     //MARK: - Edit Data From Swipe
     
     override func editModel(at indexPath: IndexPath) {
-            let alertController = UIAlertController(title: "Edit Category", message: "", preferredStyle: .alert)
-            let category = categories?[indexPath.row]
-            
-            alertController.addTextField { (textField) in
-                textField.text = category?.name
-                textField.autocapitalizationType = .words
-            }
-            
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            
-        let saveAction = UIAlertAction(title: "Save", style: .default) { (_) in
-                if let newName = alertController.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines),
-                   !newName.isEmpty, let category = category {
-                    do {
-                        try self.realm.write {
-                            category.name = newName.capitalized
-                        }
-                    } catch {
-                        print("Error updating category name: \(error)")
-                    }
-                    self.tableView.reloadData()
-                } else {
-                    // Show an error message indicating that the name cannot be empty
-                    let errorAlert = UIAlertController(title: "Error", message: "Category name cannot be empty.", preferredStyle: .alert)
-                    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-                    errorAlert.addAction(okAction)
-                    self.present(errorAlert, animated: true, completion: nil)
-                }
-            }
-
-            alertController.addAction(cancelAction)
-            alertController.addAction(saveAction)
-
-            present(alertController, animated: true, completion: nil)
+        let alertController = UIAlertController(title: "Edit Category", message: "", preferredStyle: .alert)
+        let category = categories?[indexPath.row]
+        
+        alertController.addTextField { (textField) in
+            textField.text = category?.name
+            textField.autocapitalizationType = .words
         }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        let saveAction = UIAlertAction(title: "Save", style: .default) { (_) in
+            if let newName = alertController.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+               !newName.isEmpty, let category = category {
+                do {
+                    try self.realm.write {
+                        category.name = newName.capitalized
+                    }
+                } catch {
+                    print("Error updating category name: \(error)")
+                }
+                self.tableView.reloadData()
+            } else {
+                // Show an error message indicating that the name cannot be empty
+                let errorAlert = UIAlertController(title: "Error", message: "Category name cannot be empty.", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                errorAlert.addAction(okAction)
+                self.present(errorAlert, animated: true, completion: nil)
+            }
+        }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(saveAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
     
     
     //MARK: - Add New Categories
@@ -428,37 +447,37 @@ class CategoryViewController: SwipeTableViewController{
         let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
         
         let addAction = UIAlertAction(title: "Add", style: .default) { (_) in
-                    let categoryName = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-                    
-                    if let name = categoryName, !name.isEmpty {
-                        let randomColor = UIColor().randomFlat()
-                        let newCategory = Category()
-                        newCategory.name = name.capitalized
-                        newCategory.colour = randomColor.toHexString() ?? ""
-
-                        self.save(category: newCategory)
-                    }else{
-                        let errorAlert = UIAlertController(title: "Error", message: "Category name cannot be empty.", preferredStyle: .alert)
-                        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-                        errorAlert.addAction(okAction)
-                        self.present(errorAlert, animated: true, completion: nil)
-                    }
-                }
-
-                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-
-                alert.addAction(addAction)
-                alert.addAction(cancelAction)
-
-                alert.addTextField { (field) in
-                    textField = field
-                    textField.placeholder = "Add a new category"
-                    textField.autocapitalizationType = .words
-                }
+            let categoryName = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            if let name = categoryName, !name.isEmpty {
+                let randomColor = UIColor().randomFlat()
+                let newCategory = Category()
+                newCategory.name = name.capitalized
+                newCategory.colour = randomColor.toHexString() ?? ""
                 
-                present(alert, animated: true, completion: nil)
+                self.save(category: newCategory)
+            }else{
+                let errorAlert = UIAlertController(title: "Error", message: "Category name cannot be empty.", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                errorAlert.addAction(okAction)
+                self.present(errorAlert, animated: true, completion: nil)
             }
-
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alert.addAction(addAction)
+        alert.addAction(cancelAction)
+        
+        alert.addTextField { (field) in
+            textField = field
+            textField.placeholder = "Add a new category"
+            textField.autocapitalizationType = .words
+        }
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
     
 }
 extension UILabel {
@@ -471,25 +490,25 @@ extension UILabel {
         let textStorage = NSTextStorage(attributedString: attributedText)
         let textContainer = NSTextContainer(size: maxSize)
         let layoutManager = NSLayoutManager()
-
+        
         layoutManager.addTextContainer(textContainer)
         textStorage.addLayoutManager(layoutManager)
-
+        
         textContainer.lineFragmentPadding = 0.0
         textContainer.lineBreakMode = lineBreakMode
-
+        
         let numberOfGlyphs = textStorage.length
         let range = NSRange(location: 0, length: numberOfGlyphs)
         var numberOfLines = 0
         var index = 0
         var lineRange = NSRange()
-
+        
         while index < numberOfGlyphs {
             layoutManager.lineFragmentRect(forGlyphAt: index, effectiveRange: &lineRange)
             index = NSMaxRange(lineRange)
             numberOfLines += 1
         }
-
+        
         return numberOfLines
     }
 }
