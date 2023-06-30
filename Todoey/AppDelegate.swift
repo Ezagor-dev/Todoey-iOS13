@@ -9,32 +9,46 @@ import RealmSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        print(Realm.Configuration.defaultConfiguration.fileURL)
-        
+            print("Realm file URL: \(Realm.Configuration.defaultConfiguration.fileURL)")
 
-        
-        
-        
-        do{
-            _ = try Realm()
-        }catch{
-            print("Error initialising new realm, \(error)")
+            let userDefaults = UserDefaults.standard
+            let hasCompletedOnboarding = userDefaults.bool(forKey: "HasCompletedOnboarding")
+            
+            if hasCompletedOnboarding {
+                showCategoryViewController()
+            } else {
+                showOnboardingViewController()
+            }
+            
+            return true
         }
         
+        private func showOnboardingViewController() {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let onboardingViewController = storyboard.instantiateViewController(withIdentifier: "OnboardingViewController")
+            window?.rootViewController = onboardingViewController
+        }
         
-        return true
+        private func showCategoryViewController() {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let categoryViewController = storyboard.instantiateViewController(withIdentifier: "CategoryViewController")
+            let navigationController = UINavigationController(rootViewController: categoryViewController)
+            window?.rootViewController = navigationController
+        }
+
+
+            
+//            do{
+//                _ = try Realm()
+//            }catch{
+//                print("Error initialising new realm, \(error)")
+//            }
+            
+           
     }
     
-
-    
-   
-
-
-}
 

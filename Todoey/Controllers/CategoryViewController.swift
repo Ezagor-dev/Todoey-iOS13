@@ -63,6 +63,8 @@ class CategoryViewController: SwipeTableViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+
         view.backgroundColor = .black
         
         loadCategories()

@@ -21,7 +21,7 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        view.backgroundColor = .black
         setupScrollView()
         setupPageControl()
         setupButtons()
@@ -119,11 +119,13 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
 
 
     @IBAction func getStartedButtonTapped(_ sender: UIButton) {
-        performSegue(withIdentifier: "OnboardingToCategorySegue", sender: self)
+        OnboardingManager.shared.hasCompletedOnboarding = true
+        performSegue(withIdentifier: "onboardingToCategorySegue", sender: self)
     }
 
     @IBAction func skipButtonTapped(_ sender: UIButton) {
-        performSegue(withIdentifier: "OnboardingToCategorySegue", sender: self)
+        OnboardingManager.shared.hasCompletedOnboarding = true
+        performSegue(withIdentifier: "onboardingToCategorySegue", sender: self)
     }
 
 

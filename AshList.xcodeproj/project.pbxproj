@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E60E0E1F2A4E4F4800FCF51B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60E0E1E2A4E4F4800FCF51B /* User.swift */; };
+		E60E0E212A4E605700FCF51B /* OnboardingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60E0E202A4E605700FCF51B /* OnboardingManager.swift */; };
 		E6D058D32A40CDF700BD6819 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D058D22A40CDF700BD6819 /* CategoryViewController.swift */; };
 		E6D058D62A42095E00BD6819 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = E6D058D52A42095E00BD6819 /* Realm */; };
 		E6D058D82A42095E00BD6819 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E6D058D72A42095E00BD6819 /* RealmSwift */; };
@@ -24,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E60E0E1E2A4E4F4800FCF51B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		E60E0E202A4E605700FCF51B /* OnboardingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingManager.swift; sourceTree = "<group>"; };
 		E6D058D22A40CDF700BD6819 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		E6D058DB2A448EEB00BD6819 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		E6D058DD2A448EFB00BD6819 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -58,6 +62,7 @@
 			children = (
 				E6D058DD2A448EFB00BD6819 /* Category.swift */,
 				E6D058DB2A448EEB00BD6819 /* Item.swift */,
+				E60E0E1E2A4E4F4800FCF51B /* User.swift */,
 			);
 			path = "Data Model";
 			sourceTree = "<group>";
@@ -69,6 +74,7 @@
 				EB2BE4FD239524DB00FB933B /* ToDoListViewController.swift */,
 				E6D058E42A48BAED00BD6819 /* SwipeTableViewController.swift */,
 				E6D058FA2A4DF4D300BD6819 /* OnboardingViewController.swift */,
+				E60E0E202A4E605700FCF51B /* OnboardingManager.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -203,9 +209,11 @@
 			files = (
 				E6D058DC2A448EEB00BD6819 /* Item.swift in Sources */,
 				E6D058D32A40CDF700BD6819 /* CategoryViewController.swift in Sources */,
+				E60E0E212A4E605700FCF51B /* OnboardingManager.swift in Sources */,
 				EB2BE4FE239524DB00FB933B /* ToDoListViewController.swift in Sources */,
 				E6D058FB2A4DF4D300BD6819 /* OnboardingViewController.swift in Sources */,
 				EB2BE4FA239524DB00FB933B /* AppDelegate.swift in Sources */,
+				E60E0E1F2A4E4F4800FCF51B /* User.swift in Sources */,
 				E6D058E52A48BAED00BD6819 /* SwipeTableViewController.swift in Sources */,
 				E6D058F92A4DF12C00BD6819 /* OnboardingView.swift in Sources */,
 				E6D058DE2A448EFB00BD6819 /* Category.swift in Sources */,
