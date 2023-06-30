@@ -134,9 +134,30 @@ class ToDoListViewController: SwipeTableViewController {
     //cellForRowAt
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        // Add the creation date label to the cell
+            let creationDateLabel = UILabel()
+            creationDateLabel.translatesAutoresizingMaskIntoConstraints = false
+            cell.contentView.addSubview(creationDateLabel)
+            
+            // Set the creation date label constraints
+            creationDateLabel.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 20).isActive = true
+            creationDateLabel.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -20).isActive = true
+            creationDateLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -10).isActive = true
 
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
+            // Display the creation date in the creation date label
+            let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+            dateFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a"
+            let creationDate = item.dateCreated
+            let creationDateString = dateFormatter.string(from: creationDate)
+
+            creationDateLabel.text = "Created on \(creationDateString)"
+                    
+                    // Customize the appearance of the creation date label
+                    creationDateLabel.font = UIFont.italicSystemFont(ofSize: 12)
+                    creationDateLabel.textColor = UIColor.gray
             cell.accessoryType = item.done ? .checkmark : .none
 
             if let categoryColor = UIColor(hexString: selectedCategory?.colour ?? "") {
@@ -186,6 +207,7 @@ class ToDoListViewController: SwipeTableViewController {
             cell.backgroundColor = UIColor(hexString: "79C0D0")
             cell.textLabel?.lineBreakMode = .byTruncatingTail // Truncate the text if no item is added
             cell.textLabel?.numberOfLines = 1 // Show only one line for the placeholder text
+            creationDateLabel.text = ""
         }
 
         // Set the background color of the cell
