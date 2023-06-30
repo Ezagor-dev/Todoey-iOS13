@@ -164,6 +164,33 @@ class CategoryViewController: SwipeTableViewController{
         cell.contentView.layer.mask = maskLayer
         cell.contentView.layer.masksToBounds = true
     }
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let minHeight: CGFloat = 80
+        let defaultHeight: CGFloat = 44
+
+        if let category = categories?[indexPath.row] {
+            let text = category.name
+            let labelWidth = tableView.bounds.width - 16 // Adjust the padding as needed
+            let labelFont = UIFont.systemFont(ofSize: 17)
+            let labelInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) // Adjust the insets as needed
+
+            let label = UILabel()
+            label.font = labelFont
+            label.text = text
+            label.numberOfLines = 0
+            label.frame.size = CGSize(width: labelWidth, height: .greatestFiniteMagnitude)
+            label.sizeToFit()
+
+            let lines = label.calculateMaxLines(width: labelWidth)
+            let lineSpacing: CGFloat = 4 // Adjust the line spacing as needed
+            let cellHeight = max(minHeight, (label.font.lineHeight * CGFloat(lines)) + (lineSpacing * CGFloat(lines - 1)) + labelInsets.top + labelInsets.bottom)
+
+            return cellHeight
+        }
+
+        return defaultHeight
+    }
+
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -193,6 +220,18 @@ class CategoryViewController: SwipeTableViewController{
                 cell.contentView.layer.borderColor = categoryColor.cgColor
                 cell.contentView.layer.backgroundColor = categoryColor.cgColor
                 cell.textLabel?.textColor = calculateContrastColor(forColor: categoryColor)
+                // Update label's properties
+                cell.textLabel?.numberOfLines = 0
+                cell.textLabel?.lineBreakMode = .byWordWrapping
+                cell.textLabel?.preferredMaxLayoutWidth = tableView.bounds.width - 20
+                
+                // Adjust cell's height based on text length
+                let font = UIFont.systemFont(ofSize: 17)
+                let text = category.name
+                let textHeight = text.boundingRect(with: CGSize(width: tableView.bounds.width - 20, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil).height
+                let minHeight: CGFloat = 44
+                let cellHeight = max(minHeight, textHeight + 20)
+                cell.frame.size.height = cellHeight
             } else {
                 // Set a default border color if the category color is invalid
                 cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
@@ -202,6 +241,8 @@ class CategoryViewController: SwipeTableViewController{
             cell.textLabel?.text = "No Categories added yet"
             cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
             cell.textLabel?.textColor = .black
+            cell.textLabel?.lineBreakMode = .byTruncatingTail // Truncate the text if no item is added
+            cell.textLabel?.numberOfLines = 1 // Show only one line for the placeholder text
         }
         
         // Set the background color of the cell
@@ -418,4 +459,36 @@ class CategoryViewController: SwipeTableViewController{
             }
 
     
+}
+extension UILabel {
+    func calculateMaxLines(width: CGFloat) -> Int {
+        let maxSize = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
+        let text = self.text ?? ""
+        let font = self.font
+        let attributes: [NSAttributedString.Key: Any] = [.font: font as Any]
+        let attributedText = NSAttributedString(string: text, attributes: attributes)
+        let textStorage = NSTextStorage(attributedString: attributedText)
+        let textContainer = NSTextContainer(size: maxSize)
+        let layoutManager = NSLayoutManager()
+
+        layoutManager.addTextContainer(textContainer)
+        textStorage.addLayoutManager(layoutManager)
+
+        textContainer.lineFragmentPadding = 0.0
+        textContainer.lineBreakMode = lineBreakMode
+
+        let numberOfGlyphs = textStorage.length
+        let range = NSRange(location: 0, length: numberOfGlyphs)
+        var numberOfLines = 0
+        var index = 0
+        var lineRange = NSRange()
+
+        while index < numberOfGlyphs {
+            layoutManager.lineFragmentRect(forGlyphAt: index, effectiveRange: &lineRange)
+            index = NSMaxRange(lineRange)
+            numberOfLines += 1
+        }
+
+        return numberOfLines
+    }
 }
