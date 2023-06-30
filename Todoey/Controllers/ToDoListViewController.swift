@@ -93,7 +93,13 @@ class ToDoListViewController: SwipeTableViewController {
         return todoItems?.count ?? 1
     }
     
-    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 44 // Set an initial estimated height for better performance
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
@@ -101,6 +107,8 @@ class ToDoListViewController: SwipeTableViewController {
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
             cell.accessoryType = item.done ? .checkmark : .none
+            cell.textLabel?.lineBreakMode = .byWordWrapping
+                    cell.textLabel?.numberOfLines = 0
 
             if let categoryColor = UIColor(hexString: selectedCategory?.colour ?? "") {
                 let contrastColor = calculateContrastColor(forColor: categoryColor)
@@ -135,6 +143,9 @@ class ToDoListViewController: SwipeTableViewController {
             cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
             cell.textLabel?.textColor = .black
             cell.backgroundColor = UIColor(hexString: "79C0D0")
+            cell.textLabel?.lineBreakMode = .byTruncatingTail // Truncate the text if no item is added
+                cell.textLabel?.numberOfLines = 1
+
         }
 
         // Set the background color of the cell
