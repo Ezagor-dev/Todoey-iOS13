@@ -15,4 +15,9 @@ class Item: Object {
     @objc dynamic var dateCreated: Date = Date()
     @objc dynamic var isPinned: Bool = false
     var parentCategory = LinkingObjects(fromType: Category.self, property: "items")
+    @objc dynamic var lastUpdate: Date? // Add this property
+        
+        override static func ignoredProperties() -> [String] {
+            return ["lastUpdate"]
+        }
 }

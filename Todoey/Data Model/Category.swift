@@ -15,5 +15,10 @@ class Category: Object {
     @objc dynamic var isPinned: Bool = false
     let items = List<Item>()
     @objc dynamic var createdDate: Date = Date() // Storing the creation date
+    @objc dynamic var lastUpdate: Date? // Add this property
+        
+        override static func ignoredProperties() -> [String] {
+            return ["lastUpdate"]
+        }
     
 }

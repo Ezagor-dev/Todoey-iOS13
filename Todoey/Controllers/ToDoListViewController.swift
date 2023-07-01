@@ -152,40 +152,54 @@ class ToDoListViewController: SwipeTableViewController {
     
     
     
-    //cellForRowAt
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
-        // Add the creation date label to the cell
-        let creationDateLabel = UILabel()
-        creationDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        cell.contentView.addSubview(creationDateLabel)
-        
-        // Set the creation date label constraints
-        creationDateLabel.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 20).isActive = true
-        creationDateLabel.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -20).isActive = true
-        creationDateLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -10).isActive = true
+        // Remove previous subviews from the cell's contentView
+        for subview in cell.contentView.subviews {
+            subview.removeFromSuperview()
+        }
         
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
             
-            
-            
-            
-            // Display the creation date in the creation date label
             let dateFormatter = DateFormatter()
-            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
             dateFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a"
-            let creationDate = item.dateCreated
-            let creationDateString = dateFormatter.string(from: creationDate)
+            dateFormatter.locale = Locale(identifier: "en_US") 
             
-            creationDateLabel.text = "Created on \(creationDateString)"
+            if let lastUpdatedDate = item.lastUpdate {
+                let lastUpdatedDateString = dateFormatter.string(from: lastUpdatedDate)
+                
+                let dateLabel = UILabel()
+                dateLabel.translatesAutoresizingMaskIntoConstraints = false
+                cell.contentView.addSubview(dateLabel)
+                
+                dateLabel.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 20).isActive = true
+                dateLabel.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -20).isActive = true
+                dateLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -10).isActive = true
+                
+                dateLabel.text = "Last Updated on \(lastUpdatedDateString)"
+                dateLabel.font = UIFont.italicSystemFont(ofSize: 12)
+                dateLabel.textColor = UIColor.gray
+            } else {
+                let creationDate = item.dateCreated
+                let creationDateString = dateFormatter.string(from: creationDate)
+                
+                let creationDateLabel = UILabel()
+                creationDateLabel.translatesAutoresizingMaskIntoConstraints = false
+                cell.contentView.addSubview(creationDateLabel)
+                
+                creationDateLabel.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 20).isActive = true
+                creationDateLabel.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -20).isActive = true
+                creationDateLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -10).isActive = true
+                
+                creationDateLabel.text = "Saved on \(creationDateString)"
+                creationDateLabel.font = UIFont.italicSystemFont(ofSize: 12)
+                creationDateLabel.textColor = UIColor.gray
+            }
             
-            // Customize the appearance of the creation date label
-            creationDateLabel.font = UIFont.italicSystemFont(ofSize: 12)
-            creationDateLabel.textColor = UIColor.gray
-            cell.accessoryType = item.done ? .checkmark : .none
-            
+            // Configure the cell's appearance based on the category color
             if let categoryColor = UIColor(hexString: selectedCategory?.colour ?? "") {
                 let contrastColor = calculateContrastColor(forColor: categoryColor)
                 cell.contentView.layer.borderWidth = 1.0
@@ -193,49 +207,12 @@ class ToDoListViewController: SwipeTableViewController {
                 cell.contentView.layer.backgroundColor = categoryColor.cgColor
                 cell.textLabel?.textColor = isColorDark(categoryColor) ? contrastColor : .black
                 cell.tintColor = .white
-                
-                // Update label's properties
-                cell.textLabel?.numberOfLines = 0
-                cell.textLabel?.lineBreakMode = .byWordWrapping
-                cell.textLabel?.preferredMaxLayoutWidth = tableView.bounds.width - 20
-                
-                // Adjust cell's height based on text length
-                let font = UIFont.systemFont(ofSize: 17)
-                let text = item.title
-                let textHeight = text.boundingRect(with: CGSize(width: tableView.bounds.width - 20, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil).height
-                let minHeight: CGFloat = 44
-                let cellHeight = max(minHeight, textHeight + 20)
-                cell.frame.size.height = cellHeight
-                
-               
-                
-                
-                
             } else {
                 // Set a default border color if the category color is invalid
                 cell.contentView.layer.borderWidth = 1.0
                 cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
                 cell.textLabel?.textColor = .black
             }
-            
-//            let startColor = UIColor(hexString: selectedCategory?.colour ?? "") ?? UIColor(red: 152/255, green: 238/255, blue: 204/255, alpha: 1.0)
-//            let maxItems = CGFloat(todoItems?.count ?? 1)
-//            let percentage = CGFloat(indexPath.row) / maxItems
-//            let endColor = startColor.darken(byPercentage: 0.3 + (0.4 * percentage))
-//
-//            let gradientLayer = CAGradientLayer()
-//                    gradientLayer.frame = cell.contentView.bounds
-//                    gradientLayer.colors = [startColor.cgColor, endColor.cgColor]
-//                    cell.contentView.layer.insertSublayer(gradientLayer, at: 0)
-//
-//            if item.isPinned {
-//                cell.backgroundColor = endColor
-//                cell.textLabel?.textColor = calculateContrastColor(forColor: endColor)
-//            } else {
-//                cell.backgroundColor = endColor
-//                cell.textLabel?.textColor = calculateContrastColor(forColor: endColor)
-//            }
-            
         } else {
             cell.textLabel?.text = "No Items Added"
             cell.contentView.layer.borderWidth = 1.0
@@ -244,7 +221,6 @@ class ToDoListViewController: SwipeTableViewController {
             cell.backgroundColor = UIColor(hexString: "79C0D0")
             cell.textLabel?.lineBreakMode = .byTruncatingTail // Truncate the text if no item is added
             cell.textLabel?.numberOfLines = 1 // Show only one line for the placeholder text
-            creationDateLabel.text = ""
         }
         
         // Set the background color of the cell
@@ -252,6 +228,10 @@ class ToDoListViewController: SwipeTableViewController {
         
         return cell
     }
+
+
+
+
 
     
     
@@ -299,42 +279,51 @@ class ToDoListViewController: SwipeTableViewController {
     
     
     override func editModel(at indexPath: IndexPath) {
-        let alert = UIAlertController(title: "Edit Item", message: "", preferredStyle: .alert)
-        var textField = UITextField()
-        
-        let action = UIAlertAction(title: "Update", style: .default) { (action) in
-            if let newItemName = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
-               !newItemName.isEmpty, let item = self.todoItems?[indexPath.row] {
-                do {
-                    try self.realm.write {
-                        item.title = newItemName.capitalized
-                    }
-                } catch {
-                    print("Error updating item: \(error)")
-                }
-                self.tableView.reloadData()
-            } else {
-                // Show an error message indicating that the name cannot be empty
-                let errorAlert = UIAlertController(title: "Error", message: "Item name cannot be empty.", preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-                errorAlert.addAction(okAction)
-                self.present(errorAlert, animated: true, completion: nil)
+        if let item = todoItems?[indexPath.row] {
+            let alert = UIAlertController(title: "Edit Item", message: "", preferredStyle: .alert)
+            alert.addTextField { textField in
+                textField.text = item.title // Set the initial text to the item's title
             }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            let updateAction = UIAlertAction(title: "Update", style: .default) { [weak self] _ in
+                if let textField = alert.textFields?.first, let newText = textField.text, !newText.isEmpty {
+                    // Perform the modifications within a write transaction
+                    do {
+                        let realm = try Realm()
+                        try realm.write {
+                            // Update the item's title
+                            item.title = newText
+                            
+                            // Update the item's last updated date
+                            item.lastUpdate = Date()
+                            
+                            // Update the item's created date to match the last updated date
+                            if let lastUpdate = item.lastUpdate {
+                                item.dateCreated = lastUpdate
+                            }
+                        }
+                        
+                        // Reload the table view to reflect the changes
+                        self?.tableView.reloadData()
+                    } catch {
+                        print("Error updating item: \(error)")
+                    }
+                }
+            }
+            
+            alert.addAction(cancelAction)
+            alert.addAction(updateAction)
+            
+            present(alert, animated: true, completion: nil)
         }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        
-        alert.addTextField { (field) in
-            textField = field
-            textField.text = self.todoItems?[indexPath.row].title
-            textField.autocapitalizationType = .sentences
-        }
-        
-        alert.addAction(action)
-        alert.addAction(cancelAction)
-        
-        present(alert, animated: true, completion: nil)
     }
+
+
+
+
+
+
     
     
     //MARK: - Delete Data From Swipe
