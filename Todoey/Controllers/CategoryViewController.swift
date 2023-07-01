@@ -74,11 +74,24 @@ class CategoryViewController: SwipeTableViewController, UISearchBarDelegate{
         loadCategories()
         setupTableHeaderView()
         
-        
-        
+        // Add a tap gesture recognizer to dismiss the keyboard when tapping elsewhere
+                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+                tapGesture.cancelsTouchesInView = false
+                tableView.addGestureRecognizer(tapGesture)
+
         //        tableView.separatorStyle = .none
         
     }
+    
+    @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+          view.endEditing(true) // Close the keyboard
+          
+          // If the tap was outside the table view, deselect the selected row
+          let location = gestureRecognizer.location(in: tableView)
+          if let indexPath = tableView.indexPathForRow(at: location) {
+              tableView.deselectRow(at: indexPath, animated: true)
+          }
+      }
     //MARK: - Setup Methods
         
         private func setupTableHeaderView() {
@@ -575,4 +588,10 @@ extension UILabel {
         return numberOfLines
     }
 }
-
+extension UITableView {
+    func deselectSelectedRow(animated: Bool) {
+        if let indexPath = indexPathForSelectedRow {
+            deselectRow(at: indexPath, animated: animated)
+        }
+    }
+}

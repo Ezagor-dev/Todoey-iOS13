@@ -489,4 +489,3 @@ extension ToDoListViewController: UISearchBarDelegate {
         tableView.reloadData()
     }
 }
-
