@@ -47,6 +47,8 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
                     self.editModel(at: indexPath)
                 }
         
+        
+        
         // Customize the action appearance
         deleteAction.image = UIImage(named: "delete-icon")
         editAction.image = UIImage(systemName: "pencil")
@@ -70,6 +72,12 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
             // To be implemented in subclasses
         print("Item edited from superclass.")
         }
+    func pinItem(at indexPath: IndexPath) {
+        // To be implemented in subclasses
+        print("Item pinned from superclass.")
+    }
+    
+
 }
 
 extension UIColor {

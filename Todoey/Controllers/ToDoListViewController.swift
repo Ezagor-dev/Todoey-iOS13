@@ -150,16 +150,8 @@ class ToDoListViewController: SwipeTableViewController {
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
             
-//            if item.isPinned {
-//                // Apply styling for pinned item
-//                cell.backgroundColor = UIColor.red
-//                cell.textLabel?.textColor = .black
-//                
-//            } else {
-//                // Apply styling for unpinned item
-//                cell.backgroundColor = UIColor.white
-//                cell.textLabel?.textColor = .black
-//            }
+            
+            
             
             // Display the creation date in the creation date label
             let dateFormatter = DateFormatter()
@@ -342,9 +334,10 @@ class ToDoListViewController: SwipeTableViewController {
             self.editModel(at: indexPath)
         }
         
-        let pinAction = SwipeAction(style: .default, title: "Pin") { action, indexPath in
-            self.pinItem(at: indexPath)
-        }
+        let pinActionTitle = todoItems?[indexPath.row].isPinned == true ? "Unpin" : "Pin"
+            let pinAction = SwipeAction(style: .default, title: pinActionTitle) { action, indexPath in
+                self.pinItem(at: indexPath)
+            }
         
         // Customize the action appearance
         deleteAction.image = UIImage(named: "delete-icon")
@@ -357,13 +350,13 @@ class ToDoListViewController: SwipeTableViewController {
         return [deleteAction, editAction, pinAction]
     }
     
-    func pinItem(at indexPath: IndexPath) {
+    override func pinItem(at indexPath: IndexPath) {
+        super.pinItem(at: indexPath)
         if let selectedCategory = selectedCategory, let item = todoItems?[indexPath.row] {
             do {
                 try realm.write {
                     item.isPinned = !item.isPinned
                 }
-                
                 // Retrieve all items belonging to the selected category
                 let allItems = selectedCategory.items.sorted(byKeyPath: "title", ascending: true)
                 
@@ -379,6 +372,8 @@ class ToDoListViewController: SwipeTableViewController {
                 }
                 
                 tableView.reloadData()
+                
+               
             } catch {
                 print("Error updating item pin status: \(error)")
             }
