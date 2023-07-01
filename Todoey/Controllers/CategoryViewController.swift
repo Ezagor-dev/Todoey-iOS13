@@ -357,10 +357,13 @@ class CategoryViewController: SwipeTableViewController{
             self.editModel(at: indexPath)
         }
         
-        let pinAction = SwipeAction(style: .default, title: "Pin") { action, indexPath in
-            print("pinned")
-            self.pinCategory(at: indexPath)
-        }
+        let pinActionTitle = categories?[indexPath.row].isPinned == true ? "Unpin" : "Pin"
+            let pinAction = SwipeAction(style: .default, title: pinActionTitle) { action, indexPath in
+                self.pinCategory(at: indexPath)
+            }
+        
+        
+        
         
         // Customize the action appearance
         deleteAction.image = UIImage(named: "delete-icon")
