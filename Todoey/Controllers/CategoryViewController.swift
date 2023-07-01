@@ -74,6 +74,8 @@ class CategoryViewController: SwipeTableViewController, UISearchBarDelegate{
         loadCategories()
         setupTableHeaderView()
         
+        
+        
         //        tableView.separatorStyle = .none
         
     }
@@ -90,6 +92,7 @@ class CategoryViewController: SwipeTableViewController, UISearchBarDelegate{
             searchBar.placeholder = "Search Categories"
             searchBar.searchBarStyle = .minimal
             searchBar.autocapitalizationType = .none
+            searchBar.searchTextField.textColor = .white
             
             // Add the search bar to the table view header view
             tableHeaderView.addSubview(searchBar)
@@ -148,6 +151,7 @@ class CategoryViewController: SwipeTableViewController, UISearchBarDelegate{
             navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
             
             categoryColor?.withAlphaComponent(1.0)
+            
         }
     }
     
