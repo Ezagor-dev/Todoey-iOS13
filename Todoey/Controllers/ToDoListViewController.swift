@@ -53,6 +53,7 @@ class ToDoListViewController: SwipeTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
         let selectedBackgroundView = UIView()
         selectedBackgroundView.backgroundColor = .black
         cell.selectedBackgroundView = selectedBackgroundView
@@ -72,6 +73,7 @@ class ToDoListViewController: SwipeTableViewController {
         )
         cell.contentView.layer.mask = maskLayer
         cell.contentView.layer.masksToBounds = true
+        
     }
     
     
@@ -172,7 +174,7 @@ class ToDoListViewController: SwipeTableViewController {
                 cell.contentView.layer.borderWidth = 1.0
                 cell.contentView.layer.borderColor = categoryColor.cgColor
                 cell.contentView.layer.backgroundColor = categoryColor.cgColor
-                cell.textLabel?.textColor = indexPath.row == 0 && isColorDark(categoryColor) ? .black : contrastColor
+                cell.textLabel?.textColor = isColorDark(categoryColor) ? contrastColor : .black
                 cell.tintColor = .white
                 
                 // Update label's properties
@@ -187,6 +189,11 @@ class ToDoListViewController: SwipeTableViewController {
                 let minHeight: CGFloat = 44
                 let cellHeight = max(minHeight, textHeight + 20)
                 cell.frame.size.height = cellHeight
+                
+               
+                
+                
+                
             } else {
                 // Set a default border color if the category color is invalid
                 cell.contentView.layer.borderWidth = 1.0
@@ -194,18 +201,24 @@ class ToDoListViewController: SwipeTableViewController {
                 cell.textLabel?.textColor = .black
             }
             
-            let startColor = UIColor(hexString: selectedCategory?.colour ?? "") ?? UIColor(red: 152/255, green: 238/255, blue: 204/255, alpha: 1.0)
-            let maxItems = CGFloat(todoItems?.count ?? 1)
-            let percentage = CGFloat(indexPath.row) / maxItems
-            let endColor = startColor.darken(byPercentage: 0.3 + (0.4 * percentage))
+//            let startColor = UIColor(hexString: selectedCategory?.colour ?? "") ?? UIColor(red: 152/255, green: 238/255, blue: 204/255, alpha: 1.0)
+//            let maxItems = CGFloat(todoItems?.count ?? 1)
+//            let percentage = CGFloat(indexPath.row) / maxItems
+//            let endColor = startColor.darken(byPercentage: 0.3 + (0.4 * percentage))
+//
+//            let gradientLayer = CAGradientLayer()
+//                    gradientLayer.frame = cell.contentView.bounds
+//                    gradientLayer.colors = [startColor.cgColor, endColor.cgColor]
+//                    cell.contentView.layer.insertSublayer(gradientLayer, at: 0)
+//
+//            if item.isPinned {
+//                cell.backgroundColor = endColor
+//                cell.textLabel?.textColor = calculateContrastColor(forColor: endColor)
+//            } else {
+//                cell.backgroundColor = endColor
+//                cell.textLabel?.textColor = calculateContrastColor(forColor: endColor)
+//            }
             
-            if item.isPinned {
-                cell.backgroundColor = endColor
-                cell.textLabel?.textColor = calculateContrastColor(forColor: endColor)
-            } else {
-                cell.backgroundColor = endColor
-                cell.textLabel?.textColor = calculateContrastColor(forColor: endColor)
-            }
         } else {
             cell.textLabel?.text = "No Items Added"
             cell.contentView.layer.borderWidth = 1.0
@@ -403,6 +416,7 @@ class ToDoListViewController: SwipeTableViewController {
                         newItem.title = name.capitalized
                         newItem.dateCreated = Date()
                         currentCategory.items.append(newItem)
+                        
                     }
                 } catch {
                     print("Error saving new items, \(error)")
