@@ -265,46 +265,48 @@ class CategoryViewController: SwipeTableViewController, UISearchBarDelegate{
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        
-        // Add the creation date label to the cell
-            let creationDateLabel = UILabel()
-            creationDateLabel.translatesAutoresizingMaskIntoConstraints = false
-            cell.contentView.addSubview(creationDateLabel)
+        // Remove previous subviews from the cell's contentView
+            for subview in cell.contentView.subviews {
+                subview.removeFromSuperview()
+            }
             
-            // Set the creation date label constraints
-            creationDateLabel.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 20).isActive = true
-            creationDateLabel.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -20).isActive = true
-            creationDateLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -10).isActive = true
-        
-        // Add spacing between rows
-        let space: CGFloat = 10.0
-        let inset = UIEdgeInsets(top: space, left: space, bottom: space, right: space)
-        cell.frame = cell.frame.inset(by: inset)
-        // Set the corner radius of the cell's content view
-        cell.contentView.layer.cornerRadius = cell.contentView.frame.height / 2
-        
-        
-        // Add a border to the cell's content view
-        cell.contentView.layer.borderWidth = 1.0
-        
-        if let category = categories?[indexPath.row] {
-            cell.textLabel?.text = category.name
-            
-            // Display the creation date in the creation date label
-            let dateFormatter = DateFormatter()
-            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-            dateFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a"
-            let creationDate = category.createdDate
-            let creationDateString = dateFormatter.string(from: creationDate)
-
-            creationDateLabel.text = "Created on \(creationDateString)"
+            if let category = categories?[indexPath.row] {
+                cell.textLabel?.text = category.name
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a"
+                dateFormatter.locale = Locale(identifier: "en_US")
+                
+                if let lastUpdatedDate = category.lastUpdate {
+                    let lastUpdatedDateString = dateFormatter.string(from: lastUpdatedDate)
                     
-                    // Customize the appearance of the creation date label
+                    let dateLabel = UILabel()
+                    dateLabel.translatesAutoresizingMaskIntoConstraints = false
+                    cell.contentView.addSubview(dateLabel)
+                    
+                    dateLabel.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 20).isActive = true
+                    dateLabel.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -20).isActive = true
+                    dateLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -10).isActive = true
+                    
+                    dateLabel.text = "Last Updated on \(lastUpdatedDateString)"
+                    dateLabel.font = UIFont.italicSystemFont(ofSize: 12)
+                    dateLabel.textColor = UIColor.gray
+                } else {
+                    let creationDate = category.createdDate
+                    let creationDateString = dateFormatter.string(from: creationDate)
+                    
+                    let creationDateLabel = UILabel()
+                    creationDateLabel.translatesAutoresizingMaskIntoConstraints = false
+                    cell.contentView.addSubview(creationDateLabel)
+                    
+                    creationDateLabel.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 20).isActive = true
+                    creationDateLabel.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -20).isActive = true
+                    creationDateLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -10).isActive = true
+                    
+                    creationDateLabel.text = "Saved on \(creationDateString)"
                     creationDateLabel.font = UIFont.italicSystemFont(ofSize: 12)
                     creationDateLabel.textColor = UIColor.gray
-            let completedItems = category.items.filter("done == true")
-            let totalCount = category.items.count
-            let completedCount = completedItems.count
+                }
             
             if let categoryColor = UIColor(hexString: category.colour) {
                 // Set the border color of the cell's content view to the category color
@@ -335,7 +337,7 @@ class CategoryViewController: SwipeTableViewController, UISearchBarDelegate{
             cell.textLabel?.textColor = .black
             cell.textLabel?.lineBreakMode = .byTruncatingTail // Truncate the text if no item is added
             cell.textLabel?.numberOfLines = 1 // Show only one line for the placeholder text
-            creationDateLabel.text = ""
+            
         }
         
         // Set the background color of the cell
@@ -379,6 +381,7 @@ class CategoryViewController: SwipeTableViewController, UISearchBarDelegate{
     func save(category: Category){
         do{
             try realm.write{
+                category.createdDate = Date() // Set the created date to the current date
                 realm.add(category)
             }
         }catch{
@@ -386,6 +389,7 @@ class CategoryViewController: SwipeTableViewController, UISearchBarDelegate{
         }
         tableView.reloadData()
     }
+
     
     func loadCategories() {
         categories = realm.objects(Category.self).sorted(byKeyPath: "isPinned", ascending: false)
@@ -492,6 +496,14 @@ class CategoryViewController: SwipeTableViewController, UISearchBarDelegate{
                 do {
                     try self.realm.write {
                         category.name = newName.capitalized
+                        
+                        // Update the category's last updated date
+                        category.lastUpdate = Date()
+                        
+                        // Update the category's created date to match the last updated date
+                        if let lastUpdatedDate = category.lastUpdate {
+                            category.createdDate = lastUpdatedDate
+                        }
                     }
                 } catch {
                     print("Error updating category name: \(error)")
@@ -505,6 +517,7 @@ class CategoryViewController: SwipeTableViewController, UISearchBarDelegate{
                 self.present(errorAlert, animated: true, completion: nil)
             }
         }
+
         
         alertController.addAction(cancelAction)
         alertController.addAction(saveAction)

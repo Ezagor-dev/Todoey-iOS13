@@ -166,7 +166,7 @@ class ToDoListViewController: SwipeTableViewController {
             
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a"
-            dateFormatter.locale = Locale(identifier: "en_US") 
+            dateFormatter.locale = Locale(identifier: "en_US")
             
             if let lastUpdatedDate = item.lastUpdate {
                 let lastUpdatedDateString = dateFormatter.string(from: lastUpdatedDate)
