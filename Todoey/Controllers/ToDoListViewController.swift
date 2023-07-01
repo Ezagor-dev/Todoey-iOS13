@@ -156,6 +156,17 @@ class ToDoListViewController: SwipeTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
+        // Add spacing between rows
+        let space: CGFloat = 10.0
+            let inset = UIEdgeInsets(top: space, left: space, bottom: space, right: space)
+            cell.frame = cell.frame.inset(by: inset)
+        // Set the corner radius of the cell's content view
+        cell.contentView.layer.cornerRadius = cell.contentView.frame.height / 2
+        
+        
+        // Add a border to the cell's content view
+        cell.contentView.layer.borderWidth = 1.0
+        
         // Remove previous subviews from the cell's contentView
         for subview in cell.contentView.subviews {
             subview.removeFromSuperview()
@@ -207,6 +218,19 @@ class ToDoListViewController: SwipeTableViewController {
                 cell.contentView.layer.backgroundColor = categoryColor.cgColor
                 cell.textLabel?.textColor = isColorDark(categoryColor) ? contrastColor : .black
                 cell.tintColor = .white
+                // Update label's properties
+                                cell.textLabel?.numberOfLines = 0
+                                cell.textLabel?.lineBreakMode = .byWordWrapping
+                                cell.textLabel?.preferredMaxLayoutWidth = tableView.bounds.width - 20
+                                
+                                // Adjust cell's height based on text length
+                                let font = UIFont.systemFont(ofSize: 17)
+                                let text = item.title
+                                let textHeight = text.boundingRect(with: CGSize(width: tableView.bounds.width - 20, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil).height
+                                let minHeight: CGFloat = 44
+                                let cellHeight = max(minHeight, textHeight + 20)
+                                cell.frame.size.height = cellHeight
+                
             } else {
                 // Set a default border color if the category color is invalid
                 cell.contentView.layer.borderWidth = 1.0
