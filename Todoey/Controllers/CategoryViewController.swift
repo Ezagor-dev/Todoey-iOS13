@@ -265,6 +265,19 @@ class CategoryViewController: SwipeTableViewController, UISearchBarDelegate{
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        
+        
+        // Add spacing between rows
+        let space: CGFloat = 10.0
+            let inset = UIEdgeInsets(top: space, left: space, bottom: space, right: space)
+            cell.frame = cell.frame.inset(by: inset)
+        // Set the corner radius of the cell's content view
+        cell.contentView.layer.cornerRadius = cell.contentView.frame.height / 2
+        
+        
+        // Add a border to the cell's content view
+        cell.contentView.layer.borderWidth = 1.0
+        
         // Remove previous subviews from the cell's contentView
             for subview in cell.contentView.subviews {
                 subview.removeFromSuperview()
