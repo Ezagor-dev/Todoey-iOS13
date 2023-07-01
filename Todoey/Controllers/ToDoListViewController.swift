@@ -35,8 +35,25 @@ class ToDoListViewController: SwipeTableViewController {
         view.backgroundColor = .black
         
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        // Add a tap gesture recognizer to dismiss the keyboard when tapping elsewhere
+                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+                tapGesture.cancelsTouchesInView = false
+                tableView.addGestureRecognizer(tapGesture)
+
+        //        tableView.separatorStyle = .none
         
     }
+    
+    @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+          view.endEditing(true) // Close the keyboard
+          
+          // If the tap was outside the table view, deselect the selected row
+          let location = gestureRecognizer.location(in: tableView)
+          if let indexPath = tableView.indexPathForRow(at: location) {
+              tableView.deselectRow(at: indexPath, animated: true)
+          }
+      }
+    
     func calculateContrastColor(forColor color: UIColor) -> UIColor {
         guard let components = color.cgColor.components else {
             return .black
