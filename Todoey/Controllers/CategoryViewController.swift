@@ -10,10 +10,12 @@ import UIKit
 import RealmSwift
 import SwipeCellKit
 
-class CategoryViewController: SwipeTableViewController{
+class CategoryViewController: SwipeTableViewController, UISearchBarDelegate{
     
     
-    
+    @IBOutlet weak var searchBar: UISearchBar!
+    private var tableHeaderView: UIView!
+        private var searchController: UISearchController!
     let realm = try! Realm()
     var selectedCategory: Category?
     
@@ -70,11 +72,65 @@ class CategoryViewController: SwipeTableViewController{
         view.backgroundColor = .black
         
         loadCategories()
+        setupTableHeaderView()
         
         //        tableView.separatorStyle = .none
         
     }
+    //MARK: - Setup Methods
+        
+        private func setupTableHeaderView() {
+            // Create a custom table view header view
+            tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50))
+            tableHeaderView.backgroundColor = .clear
+            
+            // Create the search bar
+            let searchBar = UISearchBar(frame: tableHeaderView.bounds)
+            searchBar.delegate = self
+            searchBar.placeholder = "Search Categories"
+            searchBar.searchBarStyle = .minimal
+            searchBar.autocapitalizationType = .none
+            
+            // Add the search bar to the table view header view
+            tableHeaderView.addSubview(searchBar)
+            
+            // Set the table view's tableHeaderView
+            tableView.tableHeaderView = tableHeaderView
+        }
     
+    //MARK: - Search Bar Delegate Methods
+        
+        func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+            // Dismiss the keyboard
+            searchBar.resignFirstResponder()
+        }
+        
+        func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+            // Perform the search operation
+            filterCategories(with: searchText)
+        }
+        
+        func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+            // Clear the search text and reload the original categories
+            searchBar.text = nil
+            filterCategories(with: "")
+            searchBar.resignFirstResponder()
+        }
+        
+        //MARK: - Helper Methods
+        
+        func filterCategories(with searchText: String) {
+            // Update the categories based on the search text
+            if searchText.isEmpty {
+                // If the search text is empty, show all categories
+                categories = realm.objects(Category.self).sorted(byKeyPath: "isPinned", ascending: false)
+            } else {
+                // Filter the categories based on the search text
+                categories = realm.objects(Category.self).filter("name CONTAINS[cd] %@", searchText).sorted(byKeyPath: "isPinned", ascending: false)
+            }
+            
+            tableView.reloadData()
+        }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -515,3 +571,4 @@ extension UILabel {
         return numberOfLines
     }
 }
+

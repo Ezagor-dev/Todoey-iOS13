@@ -454,22 +454,25 @@ class ToDoListViewController: SwipeTableViewController {
 extension ToDoListViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
-        todoItems = todoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated",ascending: true)
-        
-        tableView.reloadData()
+        if let searchText = searchBar.text {
+            filterItems(with: searchText)
+        }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchBar.text?.count == 0 {
+        filterItems(with: searchText)
+    }
+    
+    private func filterItems(with searchText: String) {
+        if searchText.isEmpty {
+            // If the search text is empty, reload the table view to show all items
             loadItems()
-            
-            DispatchQueue.main.async {
-                searchBar.resignFirstResponder()
-            }
-            
+        } else {
+            // If there is a search text, filter the items based on the search text
+            todoItems = todoItems?.filter("title CONTAINS[cd] %@", searchText).sorted(byKeyPath: "dateCreated", ascending: true)
         }
         
+        tableView.reloadData()
     }
 }
 
