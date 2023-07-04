@@ -34,7 +34,7 @@
 		E6D058E42A48BAED00BD6819 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
 		E6D058F82A4DF12C00BD6819 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		E6D058FA2A4DF4D300BD6819 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
-		EB2BE4F6239524DB00FB933B /* AshList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AshList.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB2BE4F6239524DB00FB933B /* NexTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NexTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2BE4F9239524DB00FB933B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB2BE4FD239524DB00FB933B /* ToDoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListViewController.swift; sourceTree = "<group>"; };
 		EB2BE500239524DB00FB933B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 		EB2BE4F7239524DB00FB933B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EB2BE4F6239524DB00FB933B /* AshList.app */,
+				EB2BE4F6239524DB00FB933B /* NexTask.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -129,9 +129,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		EB2BE4F5239524DB00FB933B /* AshList */ = {
+		EB2BE4F5239524DB00FB933B /* NexTask */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EB2BE50A239524DC00FB933B /* Build configuration list for PBXNativeTarget "AshList" */;
+			buildConfigurationList = EB2BE50A239524DC00FB933B /* Build configuration list for PBXNativeTarget "NexTask" */;
 			buildPhases = (
 				EB2BE4F2239524DB00FB933B /* Sources */,
 				EB2BE4F3239524DB00FB933B /* Frameworks */,
@@ -141,14 +141,14 @@
 			);
 			dependencies = (
 			);
-			name = AshList;
+			name = NexTask;
 			packageProductDependencies = (
 				E6D058D52A42095E00BD6819 /* Realm */,
 				E6D058D72A42095E00BD6819 /* RealmSwift */,
 				E6D058E02A44D5FD00BD6819 /* SwipeCellKit */,
 			);
 			productName = Todoey;
-			productReference = EB2BE4F6239524DB00FB933B /* AshList.app */;
+			productReference = EB2BE4F6239524DB00FB933B /* NexTask.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -167,7 +167,7 @@
 					};
 				};
 			};
-			buildConfigurationList = EB2BE4F1239524DB00FB933B /* Build configuration list for PBXProject "AshList" */;
+			buildConfigurationList = EB2BE4F1239524DB00FB933B /* Build configuration list for PBXProject "NexTask" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -184,7 +184,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				EB2BE4F5239524DB00FB933B /* AshList */,
+				EB2BE4F5239524DB00FB933B /* NexTask */,
 			);
 		};
 /* End PBXProject section */
@@ -366,7 +366,7 @@
 				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = Q6BH8KCYLZ;
 				INFOPLIST_FILE = Todoey/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = AshList;
+				INFOPLIST_KEY_CFBundleDisplayName = NexTask;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -374,7 +374,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ezagor-AshList";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ezagor-NexTask";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -392,7 +392,7 @@
 				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = Q6BH8KCYLZ;
 				INFOPLIST_FILE = Todoey/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = AshList;
+				INFOPLIST_KEY_CFBundleDisplayName = NexTask;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -400,7 +400,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ezagor-AshList";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ezagor-NexTask";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -413,7 +413,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		EB2BE4F1239524DB00FB933B /* Build configuration list for PBXProject "AshList" */ = {
+		EB2BE4F1239524DB00FB933B /* Build configuration list for PBXProject "NexTask" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EB2BE508239524DC00FB933B /* Debug */,
@@ -422,7 +422,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EB2BE50A239524DC00FB933B /* Build configuration list for PBXNativeTarget "AshList" */ = {
+		EB2BE50A239524DC00FB933B /* Build configuration list for PBXNativeTarget "NexTask" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EB2BE50B239524DC00FB933B /* Debug */,
