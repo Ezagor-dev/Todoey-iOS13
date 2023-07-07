@@ -174,6 +174,7 @@ class ToDoListViewController: SwipeTableViewController {
         
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
+            cell.accessoryType = item.done ? .checkmark : .none
             
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a"

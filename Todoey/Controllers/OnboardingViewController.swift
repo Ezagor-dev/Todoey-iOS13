@@ -14,7 +14,7 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
         OnboardingPage(imageName: "onboarding-2",
                        title: "Customize Your Workflow",
                        description: "Tailor AshList to fit your unique workflow. Create categories, create items, and personalize your task management experience."),
-        OnboardingPage(imageName: "onboarding-3",
+        OnboardingPage(imageName: "onboarding-3 1",
                        title: "Boost Productivity",
                        description: "Stay focused, accomplish more, and experience a sense of accomplishment as you make progress towards your targets.")
     ]
@@ -87,7 +87,7 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
     }
 
     private func setupButtons() {
-        skipButton.setTitle("Skip", for: .normal)
+        skipButton.setTitle("Skip Onboarding", for: .normal)
         skipButton.setTitleColor(.white, for: .normal)
         skipButton.backgroundColor = UIColor(hexString: "D50C61")
         skipButton.layer.cornerRadius = 8

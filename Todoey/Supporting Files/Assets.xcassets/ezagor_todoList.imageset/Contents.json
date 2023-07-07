@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "ezagor_quill_pen.png",
+      "filename" : "ezagor_to_do.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "ezagor_quill_pen 1.png",
+      "filename" : "ezagor_to_do 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "ezagor_quill_pen 2.png",
+      "filename" : "ezagor_to_do 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
