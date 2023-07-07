@@ -193,10 +193,11 @@ class ToDoListViewController: SwipeTableViewController {
                 
                 dateLabel.text = "Last Updated on \(lastUpdatedDateString)"
                 dateLabel.font = UIFont.italicSystemFont(ofSize: 12)
-                dateLabel.textColor = UIColor.gray
+
             } else {
                 let creationDate = item.dateCreated
                 let creationDateString = dateFormatter.string(from: creationDate)
+
                 
                 let creationDateLabel = UILabel()
                 creationDateLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -208,7 +209,14 @@ class ToDoListViewController: SwipeTableViewController {
                 
                 creationDateLabel.text = "Saved on \(creationDateString)"
                 creationDateLabel.font = UIFont.italicSystemFont(ofSize: 12)
-                creationDateLabel.textColor = UIColor.gray
+                creationDateLabel.textColor = .white // Set the text color to white
+                
+
+
+
+
+                
+
             }
             
             // Configure the cell's appearance based on the category color

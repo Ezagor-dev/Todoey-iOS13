@@ -318,7 +318,8 @@ class CategoryViewController: SwipeTableViewController, UISearchBarDelegate{
                     
                     creationDateLabel.text = "Saved on \(creationDateString)"
                     creationDateLabel.font = UIFont.italicSystemFont(ofSize: 12)
-                    creationDateLabel.textColor = UIColor.gray
+                    creationDateLabel.textColor = .white // Set the text color to white
+                    
                 }
             
             if let categoryColor = UIColor(hexString: category.colour) {
