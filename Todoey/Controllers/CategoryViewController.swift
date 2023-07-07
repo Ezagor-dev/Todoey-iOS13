@@ -318,8 +318,12 @@ class CategoryViewController: SwipeTableViewController, UISearchBarDelegate{
                     
                     creationDateLabel.text = "Saved on \(creationDateString)"
                     creationDateLabel.font = UIFont.italicSystemFont(ofSize: 12)
-                    creationDateLabel.textColor = .white // Set the text color to white
-                    
+                    if let categoryColor = UIColor(hexString: category.colour) {
+                                    creationDateLabel.textColor = isColorDark(categoryColor) ? .white : .gray
+                                } else {
+                                    creationDateLabel.textColor = .white
+                                }
+
                 }
             
             if let categoryColor = UIColor(hexString: category.colour) {
@@ -489,7 +493,20 @@ class CategoryViewController: SwipeTableViewController, UISearchBarDelegate{
         }
     }
     
-    
+    func isColorDark(_ color: UIColor) -> Bool {
+        guard let components = color.cgColor.components else {
+            return false
+        }
+        
+        let red = components[0]
+        let green = components[1]
+        let blue = components[2]
+        
+        let threshold: CGFloat = 0.5
+        let luminance = (red * 0.299) + (green * 0.587) + (blue * 0.114)
+        
+        return luminance < threshold
+    }
     
     //MARK: - Edit Data From Swipe
     
