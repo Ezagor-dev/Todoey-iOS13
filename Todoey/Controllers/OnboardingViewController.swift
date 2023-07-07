@@ -8,13 +8,13 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
     
 
     private let pages: [OnboardingPage] = [
-        OnboardingPage(imageName: "onboarding-1",
+        OnboardingPage(imageName: "onb1",
                        title: "Stay Organized",
                        description: "Effortlessly manage your tasks and stay organized with AshList. Keep track of everything you need to do in one convenient place."),
-        OnboardingPage(imageName: "onboarding-2",
+        OnboardingPage(imageName: "onb2",
                        title: "Customize Your Workflow",
                        description: "Tailor AshList to fit your unique workflow. Create categories, create items, and personalize your task management experience."),
-        OnboardingPage(imageName: "onboarding-3 1",
+        OnboardingPage(imageName: "onb3",
                        title: "Boost Productivity",
                        description: "Stay focused, accomplish more, and experience a sense of accomplishment as you make progress towards your targets.")
     ]
