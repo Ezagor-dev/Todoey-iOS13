@@ -77,7 +77,7 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
         pageControl.numberOfPages = pages.count
         pageControl.currentPage = 0
         pageControl.pageIndicatorTintColor = .lightGray
-        pageControl.currentPageIndicatorTintColor = UIColor(hexString: "D50C61")
+        pageControl.currentPageIndicatorTintColor = UIColor.white
 
         let pageControlSize = pageControl.size(forNumberOfPages: pages.count)
         let pageControlX = (view.bounds.width - pageControlSize.width) / 2
@@ -87,9 +87,9 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
     }
 
     private func setupButtons() {
-        skipButton.setTitle("Skip Onboarding", for: .normal)
-        skipButton.setTitleColor(.white, for: .normal)
-        skipButton.backgroundColor = UIColor(hexString: "D50C61")
+        skipButton.setTitle("Get started", for: .normal)
+        skipButton.setTitleColor(.black, for: .normal)
+        skipButton.backgroundColor = UIColor.white
         skipButton.layer.cornerRadius = 8
         skipButton.addTarget(self, action: #selector(skipButtonTapped), for: .touchUpInside)
         skipButton.layer.shadowColor = UIColor.white.cgColor
