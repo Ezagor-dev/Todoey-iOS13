@@ -1,4 +1,6 @@
 import UIKit
+import AVFoundation
+import AVKit
 
 class OnboardingViewController: UIViewController, UIScrollViewDelegate {
     private let scrollView = UIScrollView()
@@ -8,16 +10,9 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
     
 
     private let pages: [OnboardingPage] = [
-        OnboardingPage(imageName: "onb1",
-                       title: "Stay Organized",
-                       description: "Effortlessly manage your tasks and stay organized with AshList. Keep track of everything you need to do in one convenient place."),
-        OnboardingPage(imageName: "onb2",
-                       title: "Customize Your Workflow",
-                       description: "Tailor AshList to fit your unique workflow. Create categories, create items, and personalize your task management experience."),
-        OnboardingPage(imageName: "onb3",
-                       title: "Boost Productivity",
-                       description: "Stay focused, accomplish more, and experience a sense of accomplishment as you make progress towards your targets.")
+        OnboardingPage(videoName: "Last.mp4", title: "Stay Organized", description: "Effortlessly manage your tasks and stay organized with AshList. Keep track of everything you need to do in one convenient place.")
     ]
+    private var playerViewController: AVPlayerViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,116 +40,108 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
     }
 
     private func createPageView(page: OnboardingPage, frame: CGRect) -> UIView {
-        let pageView = UIView(frame: frame)
+            let pageView = UIView(frame: frame)
 
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
-        imageView.image = UIImage(named: page.imageName)
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        pageView.addSubview(imageView)
+            let videoURL = Bundle.main.url(forResource: "Last", withExtension: "mp4")!
+            let player = AVPlayer(url: videoURL)
+            let playerViewController = AVPlayerViewController()
+            playerViewController.player = player
+            pageView.addSubview(playerViewController.view)
+            addChild(playerViewController)
+            playerViewController.view.frame = pageView.bounds
+            player.play()
 
-
-
-        let titleLabel = UILabel(frame: CGRect(x: 20, y: imageView.frame.maxY + 20, width: frame.width - 40, height: 30))
-        titleLabel.text = page.title
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
-        titleLabel.textAlignment = .center
-        titleLabel.numberOfLines = 0
-        pageView.addSubview(titleLabel)
-
-        let descriptionLabel = UILabel(frame: CGRect(x: 20, y: titleLabel.frame.maxY + 20, width: frame.width - 40, height: 80))
-        descriptionLabel.text = page.description
-        descriptionLabel.font = UIFont.systemFont(ofSize: 16)
-        descriptionLabel.textAlignment = .center
-        descriptionLabel.numberOfLines = 0
-        descriptionLabel.textColor = .gray
-        pageView.addSubview(descriptionLabel)
-
-        return pageView
-    }
+            return pageView
+        }
 
     private func setupPageControl() {
-        pageControl.numberOfPages = pages.count
-        pageControl.currentPage = 0
-        pageControl.pageIndicatorTintColor = .lightGray
-        pageControl.currentPageIndicatorTintColor = UIColor.white
+            pageControl.numberOfPages = pages.count
+            pageControl.currentPage = 0
+            pageControl.pageIndicatorTintColor = .lightGray
+            pageControl.currentPageIndicatorTintColor = UIColor.white
 
-        let pageControlSize = pageControl.size(forNumberOfPages: pages.count)
-        let pageControlX = (view.bounds.width - pageControlSize.width) / 2
-        let pageControlY = view.bounds.height - 100
-        pageControl.frame = CGRect(x: pageControlX, y: pageControlY, width: pageControlSize.width, height: pageControlSize.height)
-        view.addSubview(pageControl)
-    }
+            let pageControlSize = pageControl.size(forNumberOfPages: pages.count)
+            let pageControlX = (view.bounds.width - pageControlSize.width) / 2
+            let pageControlY = view.bounds.height - 100
+            pageControl.frame = CGRect(x: pageControlX, y: pageControlY, width: pageControlSize.width, height: pageControlSize.height)
+            view.addSubview(pageControl)
+        }
 
     private func setupButtons() {
-        skipButton.setTitle("Get started", for: .normal)
-        skipButton.setTitleColor(.black, for: .normal)
-        skipButton.backgroundColor = UIColor.white
-        skipButton.layer.cornerRadius = 8
-        skipButton.addTarget(self, action: #selector(skipButtonTapped), for: .touchUpInside)
-        skipButton.layer.shadowColor = UIColor.white.cgColor
-        skipButton.layer.shadowOpacity = 0.7
-        skipButton.layer.shadowOffset = CGSize(width: 0, height: 2)
-        skipButton.layer.shadowRadius = 4
+            skipButton.setTitle("Get started", for: .normal)
+            skipButton.setTitleColor(.black, for: .normal)
+            skipButton.backgroundColor = UIColor.white
+            skipButton.layer.cornerRadius = 8
+            skipButton.addTarget(self, action: #selector(skipButtonTapped), for: .touchUpInside)
+            skipButton.layer.shadowColor = UIColor.white.cgColor
+            skipButton.layer.shadowOpacity = 0.7
+            skipButton.layer.shadowOffset = CGSize(width: 0, height: 2)
+            skipButton.layer.shadowRadius = 4
 
-
-        getStartedButton.setTitle("Get Started", for: .normal)
-        getStartedButton.setTitleColor(.white, for: .normal)
-        getStartedButton.backgroundColor = .blue
-        getStartedButton.layer.cornerRadius = 8
-        getStartedButton.addTarget(self, action: #selector(getStartedButtonTapped), for: .touchUpInside)
-        getStartedButton.isHidden = true
-
-        let buttonsStackView = UIStackView(arrangedSubviews: [skipButton])
-        buttonsStackView.axis = .horizontal
-        buttonsStackView.distribution = .fillEqually
-        buttonsStackView.spacing = 10
-
-        let buttonsStackViewWidth: CGFloat = 200
-        let buttonsStackViewHeight: CGFloat = 50
-        buttonsStackView.frame = CGRect(x: (view.bounds.width - buttonsStackViewWidth) / 2, y: view.bounds.height - 150, width: buttonsStackViewWidth, height: buttonsStackViewHeight)
-        view.addSubview(buttonsStackView)
-        view.addSubview(getStartedButton)
-    }
-
-
-    @IBAction func getStartedButtonTapped(_ sender: UIButton) {
-        OnboardingManager.shared.hasCompletedOnboarding = true
-        performSegue(withIdentifier: "onboardingToCategorySegue", sender: self)
-    }
-
-    @IBAction func skipButtonTapped(_ sender: UIButton) {
-        OnboardingManager.shared.hasCompletedOnboarding = true
-        performSegue(withIdentifier: "onboardingToCategorySegue", sender: self)
-    }
-
-
-    private func showCategoryViewController() {
-        let categoryViewController = CategoryViewController()
-                let navigationController = UINavigationController(rootViewController: categoryViewController)
-                navigationController.modalPresentationStyle = .fullScreen
-                present(navigationController, animated: true, completion: nil)
-    }
-
-    // MARK: - UIScrollViewDelegate
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let pageIndex = round(scrollView.contentOffset.x / scrollView.frame.width)
-        pageControl.currentPage = Int(pageIndex)
-
-        if pageControl.currentPage == pages.count - 1 {
-            getStartedButton.isHidden = false
-            skipButton.isHidden = false
-        } else {
+            getStartedButton.setTitle("Get Started", for: .normal)
+            getStartedButton.setTitleColor(.white, for: .normal)
+            getStartedButton.backgroundColor = .blue
+            getStartedButton.layer.cornerRadius = 8
+            getStartedButton.addTarget(self, action: #selector(getStartedButtonTapped), for: .touchUpInside)
             getStartedButton.isHidden = true
-            skipButton.isHidden = false
+
+            let buttonsStackView = UIStackView(arrangedSubviews: [skipButton])
+            buttonsStackView.axis = .horizontal
+            buttonsStackView.distribution = .fillEqually
+            buttonsStackView.spacing = 10
+
+            let buttonsStackViewWidth: CGFloat = 200
+            let buttonsStackViewHeight: CGFloat = 50
+            buttonsStackView.frame = CGRect(x: (view.bounds.width - buttonsStackViewWidth) / 2, y: view.bounds.height - 150, width: buttonsStackViewWidth, height: buttonsStackViewHeight)
+            view.addSubview(buttonsStackView)
+            view.addSubview(getStartedButton)
+        }
+
+        @objc private func getStartedButtonTapped(_ sender: UIButton) {
+            OnboardingManager.shared.hasCompletedOnboarding = true
+            performSegue(withIdentifier: "onboardingToCategorySegue", sender: self)
+        }
+
+        @objc private func skipButtonTapped(_ sender: UIButton) {
+            OnboardingManager.shared.hasCompletedOnboarding = true
+            performSegue(withIdentifier: "onboardingToCategorySegue", sender: self)
+        }
+
+        private func showCategoryViewController() {
+            let categoryViewController = CategoryViewController()
+            let navigationController = UINavigationController(rootViewController: categoryViewController)
+            navigationController.modalPresentationStyle = .fullScreen
+            present(navigationController, animated: true, completion: nil)
+        }
+
+        // MARK: - UIScrollViewDelegate
+
+        func scrollViewDidScroll(_ scrollView: UIScrollView) {
+            let pageIndex = round(scrollView.contentOffset.x / scrollView.frame.width)
+            pageControl.currentPage = Int(pageIndex)
+
+            if let player = playerViewController?.player {
+                let currentPage = Int(pageIndex)
+                let isCurrentPagePlaying = currentPage == pageControl.currentPage
+                if isCurrentPagePlaying {
+                    player.play()
+                } else {
+                    player.pause()
+                }
+            }
+
+            if pageControl.currentPage == pages.count - 1 {
+                getStartedButton.isHidden = false
+                skipButton.isHidden = false
+            } else {
+                getStartedButton.isHidden = true
+                skipButton.isHidden = false
+            }
         }
     }
 
-}
-
-struct OnboardingPage {
-    let imageName: String
-    let title: String
-    let description: String
-}
+    struct OnboardingPage {
+        let videoName: String
+        let title: String
+        let description: String
+    }

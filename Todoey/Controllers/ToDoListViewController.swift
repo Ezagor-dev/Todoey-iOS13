@@ -225,7 +225,7 @@ class ToDoListViewController: SwipeTableViewController {
                 creationDateLabel.text = "Saved on \(creationDateString)"
                 creationDateLabel.font = UIFont.italicSystemFont(ofSize: 12)
                 if let categoryColor = UIColor(hexString: selectedCategory?.colour ?? "") {
-                                creationDateLabel.textColor = isColorDark(categoryColor) ? .white : .gray
+                                creationDateLabel.textColor = isColorDark(categoryColor) ? .white : .black
                             } else {
                                 creationDateLabel.textColor = .white
                             }

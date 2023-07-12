@@ -303,7 +303,7 @@ class CategoryViewController: SwipeTableViewController, UISearchBarDelegate{
                     
                     dateLabel.text = "Last Updated on \(lastUpdatedDateString)"
                     dateLabel.font = UIFont.italicSystemFont(ofSize: 12)
-                    dateLabel.textColor = UIColor.gray
+                    dateLabel.textColor = UIColor.black
                 } else {
                     let creationDate = category.createdDate
                     let creationDateString = dateFormatter.string(from: creationDate)
@@ -319,7 +319,7 @@ class CategoryViewController: SwipeTableViewController, UISearchBarDelegate{
                     creationDateLabel.text = "Saved on \(creationDateString)"
                     creationDateLabel.font = UIFont.italicSystemFont(ofSize: 12)
                     if let categoryColor = UIColor(hexString: category.colour) {
-                                    creationDateLabel.textColor = isColorDark(categoryColor) ? .white : .gray
+                                    creationDateLabel.textColor = isColorDark(categoryColor) ? .white : .black
                                 } else {
                                     creationDateLabel.textColor = .white
                                 }
