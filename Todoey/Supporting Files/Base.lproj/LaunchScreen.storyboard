@@ -5,7 +5,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -17,17 +16,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ezagor_todoList" translatesAutoresizingMaskIntoConstraints="NO" id="FZM-vE-w2U">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NexTask" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Fw-Cx-Cf3">
+                                <rect key="frame" x="109.00000000000001" y="397" width="175.33333333333337" height="58.333333333333314"/>
+                                <fontDescription key="fontDescription" name="BradleyHandITCTT-Bold" family="Bradley Hand" pointSize="45"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <size key="shadowOffset" width="2" height="-2"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.13418799640000001" green="0.13850021360000001" blue="0.1489023864" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="FZM-vE-w2U" secondAttribute="bottom" id="KyQ-mV-DOT"/>
-                            <constraint firstItem="FZM-vE-w2U" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="OWB-CQ-YfL"/>
-                            <constraint firstItem="FZM-vE-w2U" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="enB-Xz-suq"/>
-                            <constraint firstItem="FZM-vE-w2U" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="fb2-r4-14t"/>
+                            <constraint firstItem="3Fw-Cx-Cf3" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="E3f-77-f39"/>
+                            <constraint firstItem="3Fw-Cx-Cf3" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="e9U-m8-9dq"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -36,10 +38,4 @@
             <point key="canvasLocation" x="52.671755725190835" y="374.64788732394368"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="ezagor_todoList" width="272" height="485.33334350585938"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-    </resources>
 </document>

@@ -13,6 +13,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        
             print("Realm file URL: \(Realm.Configuration.defaultConfiguration.fileURL)")
 
             let userDefaults = UserDefaults.standard
