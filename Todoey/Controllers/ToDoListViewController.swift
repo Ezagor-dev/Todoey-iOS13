@@ -174,7 +174,22 @@ class ToDoListViewController: SwipeTableViewController {
         
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
-            cell.accessoryType = item.done ? .checkmark : .none
+//            cell.accessoryType = item.done ? .checkmark : .none
+            if item.done {
+                            let checkmarkLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+                            checkmarkLabel.text = "✅"
+                            checkmarkLabel.textColor = .white
+                            checkmarkLabel.font = UIFont.systemFont(ofSize: 24)
+                // Add left padding to the checkmark label
+                                let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 30))
+                                paddingView.addSubview(checkmarkLabel)
+                                cell.accessoryView = paddingView
+                        } else {
+                            cell.accessoryView = nil
+                        }
+            // Add spacing between the cell's text label and the checkmark
+                        let spacing: CGFloat = 8.0
+                        cell.textLabel?.frame.origin.x = spacing
             
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a"
