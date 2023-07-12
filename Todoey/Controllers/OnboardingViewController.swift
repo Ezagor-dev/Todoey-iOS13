@@ -10,7 +10,7 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
     
 
     private let pages: [OnboardingPage] = [
-        OnboardingPage(videoName: "Last.mp4", title: "Stay Organized", description: "Effortlessly manage your tasks and stay organized with AshList. Keep track of everything you need to do in one convenient place.")
+        OnboardingPage(videoName: "LastNextv2.mp4", title: "Stay Organized", description: "Effortlessly manage your tasks and stay organized with AshList. Keep track of everything you need to do in one convenient place.")
     ]
     private var playerViewController: AVPlayerViewController?
 

@@ -18,7 +18,8 @@
 		E6D058E52A48BAED00BD6819 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D058E42A48BAED00BD6819 /* SwipeTableViewController.swift */; };
 		E6D058F92A4DF12C00BD6819 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D058F82A4DF12C00BD6819 /* OnboardingView.swift */; };
 		E6D058FB2A4DF4D300BD6819 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D058FA2A4DF4D300BD6819 /* OnboardingViewController.swift */; };
-		E6E6EB352A5F0EAF00AAEB75 /* Last.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E6E6EB342A5F0EAE00AAEB75 /* Last.mp4 */; };
+		E6E6EB372A5F1C3800AAEB75 /* LastNext.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E6E6EB362A5F1C3800AAEB75 /* LastNext.mp4 */; };
+		E6E6EB392A5F2A1B00AAEB75 /* LastNextv2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E6E6EB382A5F2A1B00AAEB75 /* LastNextv2.mp4 */; };
 		EB2BE4FA239524DB00FB933B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2BE4F9239524DB00FB933B /* AppDelegate.swift */; };
 		EB2BE4FE239524DB00FB933B /* ToDoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2BE4FD239524DB00FB933B /* ToDoListViewController.swift */; };
 		EB2BE501239524DB00FB933B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB2BE4FF239524DB00FB933B /* Main.storyboard */; };
@@ -35,7 +36,8 @@
 		E6D058E42A48BAED00BD6819 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
 		E6D058F82A4DF12C00BD6819 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		E6D058FA2A4DF4D300BD6819 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
-		E6E6EB342A5F0EAE00AAEB75 /* Last.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Last.mp4; sourceTree = "<group>"; };
+		E6E6EB362A5F1C3800AAEB75 /* LastNext.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LastNext.mp4; sourceTree = "<group>"; };
+		E6E6EB382A5F2A1B00AAEB75 /* LastNextv2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LastNextv2.mp4; sourceTree = "<group>"; };
 		EB2BE4F6239524DB00FB933B /* NexTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NexTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2BE4F9239524DB00FB933B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB2BE4FD239524DB00FB933B /* ToDoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListViewController.swift; sourceTree = "<group>"; };
@@ -92,7 +94,8 @@
 		E68E2AD62A37615B004992D5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				E6E6EB342A5F0EAE00AAEB75 /* Last.mp4 */,
+				E6E6EB382A5F2A1B00AAEB75 /* LastNextv2.mp4 */,
+				E6E6EB362A5F1C3800AAEB75 /* LastNext.mp4 */,
 				EB2BE502239524DC00FB933B /* Assets.xcassets */,
 				EB2BE504239524DC00FB933B /* LaunchScreen.storyboard */,
 				E6D058F82A4DF12C00BD6819 /* OnboardingView.swift */,
@@ -199,8 +202,9 @@
 			files = (
 				EB2BE506239524DC00FB933B /* LaunchScreen.storyboard in Resources */,
 				EB2BE503239524DC00FB933B /* Assets.xcassets in Resources */,
+				E6E6EB392A5F2A1B00AAEB75 /* LastNextv2.mp4 in Resources */,
 				EB2BE501239524DB00FB933B /* Main.storyboard in Resources */,
-				E6E6EB352A5F0EAF00AAEB75 /* Last.mp4 in Resources */,
+				E6E6EB372A5F1C3800AAEB75 /* LastNext.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
