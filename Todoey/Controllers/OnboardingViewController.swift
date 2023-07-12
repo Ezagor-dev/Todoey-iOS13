@@ -42,7 +42,7 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
     private func createPageView(page: OnboardingPage, frame: CGRect) -> UIView {
             let pageView = UIView(frame: frame)
 
-            let videoURL = Bundle.main.url(forResource: "Last", withExtension: "mp4")!
+            let videoURL = Bundle.main.url(forResource: "LastNextv2", withExtension: "mp4")!
             let player = AVPlayer(url: videoURL)
             let playerViewController = AVPlayerViewController()
             playerViewController.player = player
