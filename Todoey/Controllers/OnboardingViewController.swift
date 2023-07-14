@@ -92,7 +92,7 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
 
             let buttonsStackViewWidth: CGFloat = 200
             let buttonsStackViewHeight: CGFloat = 50
-            buttonsStackView.frame = CGRect(x: (view.bounds.width - buttonsStackViewWidth) / 2, y: view.bounds.height - 150, width: buttonsStackViewWidth, height: buttonsStackViewHeight)
+            buttonsStackView.frame = CGRect(x: (view.bounds.width - buttonsStackViewWidth) / 2, y: view.bounds.height - 200, width: buttonsStackViewWidth, height: buttonsStackViewHeight)
             view.addSubview(buttonsStackView)
             view.addSubview(getStartedButton)
         }
