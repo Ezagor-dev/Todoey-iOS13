@@ -36,23 +36,23 @@ class ToDoListViewController: SwipeTableViewController {
         
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         // Add a tap gesture recognizer to dismiss the keyboard when tapping elsewhere
-                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-                tapGesture.cancelsTouchesInView = false
-                tableView.addGestureRecognizer(tapGesture)
-
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        tapGesture.cancelsTouchesInView = false
+        tableView.addGestureRecognizer(tapGesture)
+        
         //        tableView.separatorStyle = .none
         
     }
     
     @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
-          view.endEditing(true) // Close the keyboard
-          
-          // If the tap was outside the table view, deselect the selected row
-          let location = gestureRecognizer.location(in: tableView)
-          if let indexPath = tableView.indexPathForRow(at: location) {
-              tableView.deselectRow(at: indexPath, animated: true)
-          }
-      }
+        view.endEditing(true) // Close the keyboard
+        
+        // If the tap was outside the table view, deselect the selected row
+        let location = gestureRecognizer.location(in: tableView)
+        if let indexPath = tableView.indexPathForRow(at: location) {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+    }
     
     func calculateContrastColor(forColor color: UIColor) -> UIColor {
         guard let components = color.cgColor.components else {
@@ -124,7 +124,8 @@ class ToDoListViewController: SwipeTableViewController {
             let text = item.title
             let labelWidth = tableView.bounds.width - 16 // Adjust the padding as needed
             let labelFont = UIFont.systemFont(ofSize: 17)
-            let labelInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) // Adjust the insets as needed
+            let labelInsets = UIEdgeInsets(top: 10, left: 10, bottom: 30, right: 10) // Adjust the insets as needed
+            
             
             let label = UILabel()
             label.font = labelFont
@@ -137,13 +138,14 @@ class ToDoListViewController: SwipeTableViewController {
             let lineSpacing: CGFloat = 4 // Adjust the line spacing as needed
             let cellHeight = max(minHeight, (label.font.lineHeight * lines) + (lineSpacing * (lines - 1)) + labelInsets.top + labelInsets.bottom)
             
+            
             return cellHeight
         }
         
         return defaultHeight
     }
     
-
+    
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44 // Set an initial estimated height for better performance
     }
@@ -152,14 +154,14 @@ class ToDoListViewController: SwipeTableViewController {
     
     
     
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
         // Add spacing between rows
         let space: CGFloat = 10.0
-            let inset = UIEdgeInsets(top: space, left: space, bottom: space, right: space)
-            cell.frame = cell.frame.inset(by: inset)
+        let inset = UIEdgeInsets(top: space, left: space, bottom: space, right: space)
+        cell.frame = cell.frame.inset(by: inset)
         // Set the corner radius of the cell's content view
         cell.contentView.layer.cornerRadius = cell.contentView.frame.height / 2
         
@@ -174,22 +176,23 @@ class ToDoListViewController: SwipeTableViewController {
         
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
-//            cell.accessoryType = item.done ? .checkmark : .none
+            
+            //            cell.accessoryType = item.done ? .checkmark : .none
             if item.done {
-                            let checkmarkLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-                            checkmarkLabel.text = "✅"
-                            checkmarkLabel.textColor = .white
-                            checkmarkLabel.font = UIFont.systemFont(ofSize: 24)
+                let checkmarkLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+                checkmarkLabel.text = "✅"
+                checkmarkLabel.textColor = .white
+                checkmarkLabel.font = UIFont.systemFont(ofSize: 24)
                 // Add left padding to the checkmark label
-                                let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 30))
-                                paddingView.addSubview(checkmarkLabel)
-                                cell.accessoryView = paddingView
-                        } else {
-                            cell.accessoryView = nil
-                        }
+                let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 30))
+                paddingView.addSubview(checkmarkLabel)
+                cell.accessoryView = paddingView
+            } else {
+                cell.accessoryView = nil
+            }
             // Add spacing between the cell's text label and the checkmark
-                        let spacing: CGFloat = 8.0
-                        cell.textLabel?.frame.origin.x = spacing
+            let spacing: CGFloat = 8.0
+            cell.textLabel?.frame.origin.x = spacing
             
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a"
@@ -208,11 +211,11 @@ class ToDoListViewController: SwipeTableViewController {
                 
                 dateLabel.text = "Last Updated on \(lastUpdatedDateString)"
                 dateLabel.font = UIFont.italicSystemFont(ofSize: 12)
-
+                
             } else {
                 let creationDate = item.dateCreated
                 let creationDateString = dateFormatter.string(from: creationDate)
-
+                
                 
                 let creationDateLabel = UILabel()
                 creationDateLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -221,21 +224,20 @@ class ToDoListViewController: SwipeTableViewController {
                 creationDateLabel.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 20).isActive = true
                 creationDateLabel.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -20).isActive = true
                 creationDateLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -10).isActive = true
+//                creationDateLabel.topAnchor.constraint(equalTo: cell.textLabel?.bottomAnchor ?? cell.contentView.topAnchor, constant: spacing).isActive = true
+
                 
                 creationDateLabel.text = "Saved on \(creationDateString)"
                 creationDateLabel.font = UIFont.italicSystemFont(ofSize: 12)
+                
+                
+                
+                
                 if let categoryColor = UIColor(hexString: selectedCategory?.colour ?? "") {
-                                creationDateLabel.textColor = isColorDark(categoryColor) ? .white : .black
-                            } else {
-                                creationDateLabel.textColor = .white
-                            }
-                
-
-
-
-
-                
-
+                    creationDateLabel.textColor = isColorDark(categoryColor) ? .white : .black
+                } else {
+                    creationDateLabel.textColor = .white
+                }
             }
             
             // Configure the cell's appearance based on the category color
@@ -247,17 +249,17 @@ class ToDoListViewController: SwipeTableViewController {
                 cell.textLabel?.textColor = isColorDark(categoryColor) ? contrastColor : .black
                 cell.tintColor = .white
                 // Update label's properties
-                                cell.textLabel?.numberOfLines = 0
-                                cell.textLabel?.lineBreakMode = .byWordWrapping
-                                cell.textLabel?.preferredMaxLayoutWidth = tableView.bounds.width - 20
-                                
-                                // Adjust cell's height based on text length
-                                let font = UIFont.systemFont(ofSize: 17)
-                                let text = item.title
-                                let textHeight = text.boundingRect(with: CGSize(width: tableView.bounds.width - 20, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil).height
-                                let minHeight: CGFloat = 44
-                                let cellHeight = max(minHeight, textHeight + 20)
-                                cell.frame.size.height = cellHeight
+                cell.textLabel?.numberOfLines = 0
+                cell.textLabel?.lineBreakMode = .byWordWrapping
+                cell.textLabel?.preferredMaxLayoutWidth = tableView.bounds.width - 20
+                
+                // Adjust cell's height based on text length
+                let font = UIFont.systemFont(ofSize: 17)
+                let text = item.title
+                let textHeight = text.boundingRect(with: CGSize(width: tableView.bounds.width - 20, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil).height
+                let minHeight: CGFloat = 44
+                let cellHeight = max(minHeight, textHeight + 20)
+                cell.frame.size.height = cellHeight
                 
             } else {
                 // Set a default border color if the category color is invalid
@@ -280,11 +282,11 @@ class ToDoListViewController: SwipeTableViewController {
         
         return cell
     }
-
-
-
-
-
+    
+    
+    
+    
+    
     
     
     func isColorDark(_ color: UIColor) -> Bool {
@@ -302,7 +304,7 @@ class ToDoListViewController: SwipeTableViewController {
         return luminance < threshold
     }
     
-
+    
     
     //MARK: - TableView Delegate Methods
     
@@ -370,12 +372,12 @@ class ToDoListViewController: SwipeTableViewController {
             present(alert, animated: true, completion: nil)
         }
     }
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
     
     
     //MARK: - Delete Data From Swipe
@@ -406,9 +408,9 @@ class ToDoListViewController: SwipeTableViewController {
         }
         
         let pinActionTitle = todoItems?[indexPath.row].isPinned == true ? "Unpin" : "Pin"
-            let pinAction = SwipeAction(style: .default, title: pinActionTitle) { action, indexPath in
-                self.pinItem(at: indexPath)
-            }
+        let pinAction = SwipeAction(style: .default, title: pinActionTitle) { action, indexPath in
+            self.pinItem(at: indexPath)
+        }
         
         // Customize the action appearance
         deleteAction.image = UIImage(named: "delete-icon")
@@ -444,18 +446,18 @@ class ToDoListViewController: SwipeTableViewController {
                 
                 tableView.reloadData()
                 
-               
+                
             } catch {
                 print("Error updating item pin status: \(error)")
             }
         }
     }
-
-
-
     
     
- 
+    
+    
+    
+    
     //MARK: - Add New Items
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {

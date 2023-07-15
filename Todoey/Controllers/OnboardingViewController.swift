@@ -10,7 +10,7 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
     
 
     private let pages: [OnboardingPage] = [
-        OnboardingPage(videoName: "LastNextv2.mp4", title: "Stay Organized", description: "Effortlessly manage your tasks and stay organized with AshList. Keep track of everything you need to do in one convenient place.")
+        OnboardingPage(videoName: "NTV3.mp4", title: "Stay Organized", description: "Effortlessly manage your tasks and stay organized with AshList. Keep track of everything you need to do in one convenient place.")
     ]
     private var playerViewController: AVPlayerViewController?
 
@@ -42,7 +42,7 @@ class OnboardingViewController: UIViewController, UIScrollViewDelegate {
     private func createPageView(page: OnboardingPage, frame: CGRect) -> UIView {
             let pageView = UIView(frame: frame)
 
-            let videoURL = Bundle.main.url(forResource: "LastNextv2", withExtension: "mp4")!
+            let videoURL = Bundle.main.url(forResource: "NTV3", withExtension: "mp4")!
             let player = AVPlayer(url: videoURL)
             let playerViewController = AVPlayerViewController()
             playerViewController.player = player
